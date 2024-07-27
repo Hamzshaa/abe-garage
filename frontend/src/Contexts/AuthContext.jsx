@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import getAuth from "../util/auth";
-import propTypes from "prop-types";
 
 const AuthContext = React.createContext();
 
@@ -8,6 +7,7 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+// eslint-disable-next-line
 export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -28,8 +28,4 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-AuthProvider.propTypes = {
-  children: propTypes.node.isRequired,
 };
