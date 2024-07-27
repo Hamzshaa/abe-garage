@@ -12,8 +12,12 @@ const logIn = async (formData) => {
 	const response = await fetch(`${api_url}/api/employee/login`, requestOptions);
 	return response;
 };
-
+// A function to log out the user
+const logOut = () => {
+	localStorage.removeItem("employee");
+};
 // Export the functions
 module.exports = {
 	logIn,
+	logOut,
 };
