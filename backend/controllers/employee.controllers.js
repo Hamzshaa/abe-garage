@@ -24,7 +24,7 @@ async function createEmployee(req, res, next) {
         });
       } else {
         res.status(200).json({
-          status: "true",
+          success: "true",
         });
       }
     } catch (error) {
@@ -52,9 +52,72 @@ async function getAllEmployees(req, res, next) {
     });
   }
 }
+async function getEmployeeById(req, res, next) {
+  const employee = await employeeService.getEmployeeById(req, res);
+      // await employeeService.getEmployeeById(req, res);
+      try {
+        
+        if (!employee) {
+          res.status(400).json({
+            error: "Employee not found!",
+          })
+        } else {
+          res.status(200).json({
+            status : "success",
+            data: employee,
+          })
+        }
+      } catch (error) {
+        res.status(500).json({
+          error: "Internal Server Error"
+        })
+      }
+}
+async function updateEmployee(req, res, next) {
+  const updatedEmployeeData = req.body;
+  try {
+    const result = await employeeService.updateEmployee(updatedEmployeeData);
+    if (!result) {
+      return res.status(400).json({
+        error: "Failed to update employee!",
+      });
+    }
+    res.status(200).json({
+      success : "true",
+      message: "Employee updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+    })
+    // console.log("controller error",error)
+  }
+}
+async function deleteEmployee(req, res, next) {
+  const removeEmployee = await employeeService.deleteEmployee(req, res)
+  try {
+    if (!removeEmployee) {
+      return res.status(400).json({
+        error: "Employee not found or already deleted!",
+      })
+    }
+    res.status(200).json({
+      success: "true",
+      message: "Employee deleted successfully",
+    }) 
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+    })
+  }
+}
+
 
 // Export the createEmployee controller
 module.exports = {
-  createEmployee,
-  getAllEmployees,
+	createEmployee,
+	getAllEmployees,
+	getEmployeeById,
+	updateEmployee,
+	deleteEmployee,
 };
