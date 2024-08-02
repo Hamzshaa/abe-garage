@@ -5,41 +5,41 @@ const router = express.Router();
 // Import authMiddleware
 const authMiddleware = require("../middlewares/auth.middleware");
 // Import the vehicle controller
-const vehicleController = require("../controllers/vehicle.controller");
+const vehicleController = require("../controllers/vehicle.controllers");
 
 // Route to add a new vehicle
 router.post(
-	"/api/vehicle/add",
-	[authMiddleware.verifyToken, authMiddleware.isAdmin],
-	vehicleController.createVehicle
+  "/api/vehicle",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  vehicleController.createVehicle
 );
 
 // Route to get a vehicle by ID
 router.get(
-	"/api/vehicle/single/:vehicle_id",
-	[authMiddleware.verifyToken, authMiddleware.isAdmin],
-	vehicleController.getVehicleById
+  "/api/vehicle/single/:vehicle_id",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  vehicleController.getVehicleById
 );
 
 // Route to delete a vehicle by its ID
 router.delete(
-	"/api/vehicle/delete/:vehicle_id",
-	[authMiddleware.verifyToken, authMiddleware.isAdmin],
-	vehicleController.deleteVehicle
+  "/api/vehicle/delete/:vehicle_id",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  vehicleController.deleteVehicle
 );
 
 // Route to edit a vehicle by its ID
 router.put(
-	"/api/vehicle/edit",
-	[authMiddleware.verifyToken, authMiddleware.isAdmin],
-	vehicleController.editVehicleById
+  "/api/vehicle/edit",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  vehicleController.editVehicleById
 );
 
 // Route to get all vehicles by customer ID
 router.get(
-	"/api/vehicle/all/:customer_id",
-	[authMiddleware.verifyToken, authMiddleware.isAdmin],
-	vehicleController.getAllVehicles
+  "/api/vehicle/all/:customer_id",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  vehicleController.getAllVehicles
 );
 
 module.exports = router;
