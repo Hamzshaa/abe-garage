@@ -10,8 +10,6 @@ const createVehicle = async (req, res, next) => {
       vehicleData
     );
 
-    console.log("Vehicle Exists?: ", vehicleExists);
-
     // If vehicle exists, send a response to the client
     if (vehicleExists) {
       return res.status(400).json({

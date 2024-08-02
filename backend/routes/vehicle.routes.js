@@ -16,7 +16,7 @@ router.post(
 
 // Route to get a vehicle by ID
 router.get(
-  "/api/vehicle/single/:vehicle_id",
+  "/api/vehicle/:vehicle_id",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   vehicleController.getVehicleById
 );
@@ -30,14 +30,14 @@ router.delete(
 
 // Route to edit a vehicle by its ID
 router.put(
-  "/api/vehicle/edit",
+  "/api/vehicle",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   vehicleController.editVehicleById
 );
 
 // Route to get all vehicles by customer ID
 router.get(
-  "/api/vehicle/all/:customer_id",
+  "/api/vehicles/:customer_id",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   vehicleController.getAllVehicles
 );
