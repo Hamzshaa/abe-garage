@@ -34,7 +34,7 @@ async function createVehicle(vehicleData) {
 			(customer_id, vehicle_year, vehicle_make, vehicle_model, vehicle_type, vehicle_mileage, vehicle_tag, vehicle_serial, vehicle_color) 
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const result = await conn.query(query, [
+    const [result] = await conn.query(query, [
       customer_id,
       vehicle_year,
       vehicle_make,
@@ -46,6 +46,8 @@ async function createVehicle(vehicleData) {
       vehicle_color,
     ]);
 
+    console.log("Result creating vehicle: ", result);
+
     return result.affectedRows === 1;
   } catch (error) {
     console.error("Error creating vehicle:", error);
@@ -53,6 +55,7 @@ async function createVehicle(vehicleData) {
   }
 }
 
+// 3. Function to retrieve all vehicles for a single customer
 async function getAllVehicles(customerId) {
   try {
     const query = `
@@ -60,7 +63,7 @@ async function getAllVehicles(customerId) {
 			INNER JOIN customer_identifier ci ON ci.customer_id = cvi.customer_id
 			WHERE cvi.customer_id = ?`;
 
-    const results = await conn.query(query, [customerId]);
+    const [results] = await conn.query(query, [customerId]);
     return results;
   } catch (error) {
     console.error("Error retrieving vehicles:", error);
@@ -72,7 +75,7 @@ async function getAllVehicles(customerId) {
 async function getVehicleById(vehicle_id) {
   try {
     const query = "SELECT * FROM customer_vehicle_info WHERE vehicle_id = ?";
-    const rows = await conn.query(query, [vehicle_id]);
+    const [rows] = await conn.query(query, [vehicle_id]);
     return rows[0];
   } catch (error) {
     console.error("Error getting vehicle by ID:", error);
@@ -161,7 +164,7 @@ async function editVehicleById(vehicleData) {
 
     values.push(vehicle_id);
 
-    const result = await conn.query(query, values);
+    const [result] = await conn.query(query, values);
 
     return result.affectedRows === 1;
   } catch (error) {
