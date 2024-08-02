@@ -9,6 +9,7 @@ const dbConfig = {
   connectionLimit: 10,
 };
 
+
 const pool = mysql.createPool(dbConfig);
 async function query(sql, params) {
   const [rows, fields] = await pool.execute(sql, params);
