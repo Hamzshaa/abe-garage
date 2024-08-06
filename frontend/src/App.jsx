@@ -1,21 +1,19 @@
-import { Routes, Route } from "react-router-dom"; // eslint-disable-line
-
+import { Routes, Route } from "react-router-dom";
 import "./assets/template_assets/css/bootstrap.css";
 import "./assets/template_assets/css/style.css";
 import "./assets/template_assets/css/responsive.css";
 import "./assets/template_assets/css/color.css";
-
 import "./assets/styles/custom.css";
 import Login from "./markup/pages/Login";
 import Header from "./markup/components/Header/Header";
 import Footer from "./markup/components/Footer/Footer";
 import AddEmployee from "./markup/pages/Admin/AddEmployee";
 import Unauthorized from "./markup/pages/Unauthorized";
-
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import Home from "./markup/pages/Home";
 import Employees from "./markup/pages/Admin/Employees";
 import Services from "./markup/pages/Services";
+import Dashboard from "./markup/pages/Admin/dashboard";
 
 function App() {
 	return (
@@ -35,6 +33,14 @@ function App() {
 					}
 				/>
 				<Route path="/admin/employees" element={<Employees />} />
+				<Route
+					path="/admin/dashboard"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<Dashboard />
+						</PrivateAuthRoute>
+					}
+				/>
 			</Routes>
 			<Footer />
 		</>
