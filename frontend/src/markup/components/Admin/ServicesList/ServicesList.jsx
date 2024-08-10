@@ -90,9 +90,7 @@ const ServicesList = () => {
       } else {
         setSuccess(true);
         setServerError("");
-        setTimeout(() => {
-          window.location.reload(); // Or redirect to another page
-        }, 2000);
+        fetchServices();
       }
     } catch (error) {
       setServerError("Failed to create service. Please try again.");
