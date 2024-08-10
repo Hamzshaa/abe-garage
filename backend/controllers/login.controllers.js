@@ -14,7 +14,7 @@ async function logIn(req, res, next) {
     const employee = await loginService.logIn(employeeData);
     // If the employee is not found
     if (employee.status === "fail") {
-      res.status(403).json({
+      return res.status(403).json({
         status: employee.status,
         message: employee.message,
       });

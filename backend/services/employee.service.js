@@ -12,7 +12,6 @@ async function checkIfEmployeeExists(email) {
 	}
 	return false;
 }
-
 // A function to create a new employee
 async function createEmployee(employee) {
 	let createdEmployee = {};
@@ -150,21 +149,21 @@ async function deleteEmployee(req, res) {
 		const result = await conn.query(query, [id]);
 		//  Delete from employee_pass
 		const query2 = `DELETE FROM employee_pass WHERE employee_id = ?`;
-		const result2 =await conn.query(query2, [id]);
+		const result2 = await conn.query(query2, [id]);
 		//  Delete from employee_info
 		const query3 = `DELETE FROM employee_info WHERE employee_id = ?`;
 		const result3 = await conn.query(query3, [id]);
 		//  Delete from employee
 		const query4 = `DELETE FROM  employee WHERE employee_id = ?`;
 		const result4 = await conn.query(query4, [id]);
-    if(
-      result.affectedRows === 0 &&
-      result2.affectedRows === 0 &&
-      result3.affectedRows === 0 &&
-      result4.affectedRows === 0
-    ) {
-      return false; // No rows affected, meaning the employee was not found
-    }
+		if (
+			result.affectedRows === 0 &&
+			result2.affectedRows === 0 &&
+			result3.affectedRows === 0 &&
+			result4.affectedRows === 0
+		) {
+			return false; // No rows affected, meaning the employee was not found
+		}
 		return true; // At least one row was affected
 	} catch (error) {
 		console.log("Error deleting employee: ", error);
