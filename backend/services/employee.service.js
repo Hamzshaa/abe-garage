@@ -66,9 +66,9 @@ async function createEmployee(employee) {
 async function getEmployeeByEmail(employee_email) {
 	const query =
 		"SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_pass ON employee.employee_id = employee_pass.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_email = ?";
-	try {
-		const rows = await conn.query(query, [employee_email]);
-		return rows;
+		try {
+			const rows = await conn.query(query, [employee_email]);
+			return rows;
 	} catch (error) {
 		console.log("Error executing query: ", error);
 		throw error;
@@ -150,21 +150,21 @@ async function deleteEmployee(req, res) {
 		const result = await conn.query(query, [id]);
 		//  Delete from employee_pass
 		const query2 = `DELETE FROM employee_pass WHERE employee_id = ?`;
-		const result2 =await conn.query(query2, [id]);
+		const result2 = await conn.query(query2, [id]);
 		//  Delete from employee_info
 		const query3 = `DELETE FROM employee_info WHERE employee_id = ?`;
 		const result3 = await conn.query(query3, [id]);
 		//  Delete from employee
 		const query4 = `DELETE FROM  employee WHERE employee_id = ?`;
 		const result4 = await conn.query(query4, [id]);
-    if(
-      result.affectedRows === 0 &&
-      result2.affectedRows === 0 &&
-      result3.affectedRows === 0 &&
-      result4.affectedRows === 0
-    ) {
-      return false; // No rows affected, meaning the employee was not found
-    }
+		if (
+			result.affectedRows === 0 &&
+			result2.affectedRows === 0 &&
+			result3.affectedRows === 0 &&
+			result4.affectedRows === 0
+		) {
+			return false; // No rows affected, meaning the employee was not found
+		}
 		return true; // At least one row was affected
 	} catch (error) {
 		console.log("Error deleting employee: ", error);
