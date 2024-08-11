@@ -8,7 +8,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 console.log("PORT:", process.env.PORT);
-console.log("DB_PASS:", process.env.DB_PASS);
+// console.log("DB_PASS:", process.env.DB_PASS);
 
 
 const router = require("./routes");

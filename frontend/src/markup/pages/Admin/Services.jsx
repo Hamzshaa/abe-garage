@@ -1,8 +1,8 @@
 import { useAuth } from "../../../Contexts/AuthContext";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import AdminMenu from "../../components/Admin/EmployeesList/AdminMenu/AdminMenu";
-import EmployeesList from "../../components/Admin/EmployeesList/EmployeesList";
-function Employees() {
+import ServicesList from "../../components/Admin/ServicesList/ServicesList";
+function Services() {
   const { isLogged, isAdmin } = useAuth();
 
   if (isLogged) {
@@ -15,7 +15,7 @@ function Employees() {
                 <AdminMenu />
               </div>
               <div className="col-md-9 admin-right-side">
-                <EmployeesList />
+                <ServicesList />
               </div>
             </div>
           </div>
@@ -37,4 +37,4 @@ function Employees() {
   }
 }
 
-export default Employees;
+export default Services;

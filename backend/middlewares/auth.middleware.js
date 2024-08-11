@@ -24,7 +24,7 @@ const verifyToken = async (req, res, next) => {
       });
     }
     // console.log("Here is the decoded token");
-    // console.log(decoded);
+    // console.log(`robel ${decoded.employee_email}`);
     req.employee_email = decoded.employee_email;
     next();
   });
