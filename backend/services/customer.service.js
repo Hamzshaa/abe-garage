@@ -1,6 +1,7 @@
 // Import the database configuration
 const db = require("../config/db.config");
-const { v4: uuidv4 } = require("uuid");
+const crypto = require("crypto");
+
 /**
  * Check if a customer exists by email.
  * @param {string} email - The email of the customer to check.
@@ -22,15 +23,15 @@ async function checkIfCustomerExists(email) {
  * @returns {object|boolean} - The new customer ID if successful, false otherwise.
  */
 async function createCustomer(customer) {
-  const customerHash = uuidv4();
+  const customer_hash = crypto.randomBytes(16).toString("hex").slice(0, 32);
+
   try {
     const query =
-      "INSERT INTO customer_identifier (customer_email, customer_phone_number, customer_hash, customer_added_date) VALUES (?, ?, ?, ?)";
+      "INSERT INTO customer_identifier (customer_email, customer_phone_number, customer_hash) VALUES (?, ?, ?)";
     const result = await db.query(query, [
       customer.customer_email,
       customer.customer_phone_number,
-      customerHash,
-      customer.customer_added_date,
+      customer_hash,
     ]);
     // If the insert into customer_identifier table failed, return false
     if (result.affectedRows !== 1) {
