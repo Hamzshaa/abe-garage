@@ -1,5 +1,6 @@
 // Import the database configuration
 const db = require("../config/db.config");
+const { v4: uuidv4 } = require("uuid");
 /**
  * Check if a customer exists by email.
  * @param {string} email - The email of the customer to check.
@@ -21,18 +22,23 @@ async function checkIfCustomerExists(email) {
  * @returns {object|boolean} - The new customer ID if successful, false otherwise.
  */
 async function createCustomer(customer) {
+  const customerHash = uuidv4();
   try {
-    const query = "INSERT INTO customer_identifier (customer_email, customer_phone_number) VALUES (?, ?)";
+    const query =
+      "INSERT INTO customer_identifier (customer_email, customer_phone_number, customer_hash, customer_added_date) VALUES (?, ?, ?, ?)";
     const result = await db.query(query, [
       customer.customer_email,
       customer.customer_phone_number,
+      customerHash,
+      customer.customer_added_date,
     ]);
     // If the insert into customer_identifier table failed, return false
     if (result.affectedRows !== 1) {
       return false;
     }
     const customerId = result.insertId;
-    const query2 = "INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name, active_customer_status) VALUES (?, ?, ?, ?)";
+    const query2 =
+      "INSERT INTO customer_info (customer_id, customer_first_name, customer_last_name, active_customer_status) VALUES (?, ?, ?, ?)";
     await db.query(query2, [
       customerId,
       customer.customer_first_name,
@@ -52,7 +58,8 @@ async function createCustomer(customer) {
  */
 async function getAllCustomers() {
   try {
-    const query = "SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id";
+    const query =
+      "SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id";
     const rows = await db.query(query);
     return rows;
   } catch (err) {
@@ -67,7 +74,8 @@ async function getAllCustomers() {
  */
 async function getCustomerById(customerId) {
   try {
-    const query = "SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id WHERE customer_identifier.customer_id = ?";
+    const query =
+      "SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id WHERE customer_identifier.customer_id = ?";
     const rows = await db.query(query, [customerId]);
     return rows.length > 0 ? rows[0] : null;
   } catch (err) {
@@ -83,7 +91,8 @@ async function getCustomerById(customerId) {
  */
 async function updateCustomer(customerId, updatedData) {
   try {
-    const query = "UPDATE customer_identifier SET customer_email = ?, customer_phone_number = ? WHERE customer_id = ?";
+    const query =
+      "UPDATE customer_identifier SET customer_email = ?, customer_phone_number = ? WHERE customer_id = ?";
     const result = await db.query(query, [
       updatedData.customer_email,
       updatedData.customer_phone_number,
@@ -93,7 +102,8 @@ async function updateCustomer(customerId, updatedData) {
     if (result.affectedRows !== 1) {
       return false;
     }
-    const query2 = "UPDATE customer_info SET customer_first_name = ?, customer_last_name = ?, active_customer_status = ? WHERE customer_id = ?";
+    const query2 =
+      "UPDATE customer_info SET customer_first_name = ?, customer_last_name = ?, active_customer_status = ? WHERE customer_id = ?";
     await db.query(query2, [
       updatedData.customer_first_name,
       updatedData.customer_last_name,

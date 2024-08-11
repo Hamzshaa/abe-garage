@@ -16,29 +16,31 @@ import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import Home from "./markup/pages/Home";
 import Employees from "./markup/pages/Admin/Employees";
 import Services from "./markup/pages/Services";
+import Test from "./markup/pages/Test";
 
 function App() {
-	return (
-		<>
-			<Header />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/services" element={<Services />} />
-				<Route path="/unauthorized" element={<Unauthorized />} />
-				<Route
-					path="/admin/add-employee"
-					element={
-						<PrivateAuthRoute roles={[3]}>
-							<AddEmployee />
-						</PrivateAuthRoute>
-					}
-				/>
-				<Route path="/admin/employees" element={<Employees />} />
-			</Routes>
-			<Footer />
-		</>
-	);
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route
+          path="/admin/add-employee"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <AddEmployee />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route path="/admin/employees" element={<Employees />} />
+      </Routes>
+      <Footer />
+    </>
+  );
 }
 
 export default App;

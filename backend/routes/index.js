@@ -11,6 +11,7 @@ const serviceRoutes = require("./service.routes");
 
 const customerRoute = require("./customer.routes");
 
+const chartsRoute = require("./chart.routes");
 
 const router = express.Router();
 
@@ -23,5 +24,6 @@ router.use(loginRoutes);
 router.use(customerRoute);
 
 router.use(vehicleRoutes);
+router.use(chartsRoute);
 
 module.exports = router;

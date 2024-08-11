@@ -8,7 +8,7 @@ import { useAuth } from "../../../Contexts/AuthContext";
 
 function Header() {
   // Use the custom hook to access the data in the context
-  const { isLogged, setIsLogged, employee } = useAuth();
+  const { isLogged, setIsLogged, employee, isAdmin } = useAuth();
   // console.log(useAuth());
 
   console.log("isLogged", isLogged);
@@ -82,6 +82,11 @@ function Header() {
                         <li>
                           <a href="/contact">Contact Us</a>
                         </li>
+                        {isAdmin && (
+                          <li>
+                            <a href="/admin">Admin</a>
+                          </li>
+                        )}
                       </ul>
                     </div>
                   </nav>
