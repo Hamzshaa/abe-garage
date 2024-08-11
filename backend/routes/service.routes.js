@@ -22,12 +22,12 @@ router.post(
   serviceController.createService
 );
 router.put(
-  "/api/service",
+  "/api/service/",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   serviceController.updateService
 );
 router.delete(
-  "/api/service",
+  "/api/service/:id",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   serviceController.deactivateService
 );
