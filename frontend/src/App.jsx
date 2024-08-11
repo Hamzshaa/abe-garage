@@ -17,6 +17,7 @@ import Home from "./markup/pages/Home";
 import Employees from "./markup/pages/Admin/Employees";
 import Service from "./markup/pages/Admin/Services";
 import Services from "./markup/pages/Services";
+import Orders from "./markup/pages/Orders/Orders";
 import EditService from "./markup/components/Admin/EditService/EditService";
 
 function App() {
@@ -37,12 +38,14 @@ function App() {
           }
         />
         <Route path="/admin/employees" element={<Employees />} />
+        <Route path="/admin/orders" element={<Orders />} />
         <Route path="/admin/services" element={<Service />} />
         <Route path="/services/edit/:id" element={<EditService />} />
       </Routes>
       <Footer />
     </>
   );
+
 }
 
 export default App;

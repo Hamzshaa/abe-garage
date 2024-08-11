@@ -54,26 +54,26 @@ function LoginForm() {
       .then((response) => {
         console.log(response);
         if (response.status === "success") {
-          // Save the user in the local storage
-          if (response.data.employee_token) {
-            console.log(response.data);
-            localStorage.setItem("employee", JSON.stringify(response.data));
-          }
-          // Redirect the user to the dashboard
-          // navigate('/admin');
-          console.log(location);
-          if (location.pathname === "/login") {
-            // navigate('/admin');
-            // window.location.replace('/admin');
-            // To home for now
-            window.location.replace("/");
-          } else {
-            window.location.reload();
-          }
-        } else {
-          // Show an error message
-          setServerError(response.message);
-        }
+					// Save the user in the local storage
+					if (response.data.employee_token) {
+						console.log(response.data);
+						localStorage.setItem("employee", JSON.stringify(response.data));
+					}
+					// Redirect the user to the dashboard
+					// navigate('/admin');
+					console.log(location);
+					if (location.pathname === "/login") {
+						// navigate('/admin');
+						// window.location.replace('/admin');
+						// To home for now
+						window.location.replace("/");
+					} else {
+						window.location.reload();
+					}
+				} else {
+					// Show an error message
+					setServerError(response.message);
+				}
       })
       .catch((err) => {
         console.log(err);
