@@ -37,7 +37,7 @@ async function addOrder(order) {
 			order.order_total_price,
 			order.estimated_completion_date,
 			order.completion_date || null,
-			order.additional_request || "nullRRR",
+			order.additional_request || null,
 			order.notes_for_internal_use || null,
 			order.notes_for_customer || null,
 			order.additional_requests_completed,
