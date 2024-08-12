@@ -104,6 +104,7 @@ function AddCustomerForm(props) {
 												role="alert"
 												style={{ color: "green", marginBottom: "10px" }}
 											>
+											
 												Customer is added successfully!
 											</div>
 										)}
