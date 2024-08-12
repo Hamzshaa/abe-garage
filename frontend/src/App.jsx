@@ -36,13 +36,13 @@ function App() {
           }
         />
         <Route
-					path="/admin/dashboard"
-					element={
-						<PrivateAuthRoute roles={[3]}>
-							<Dashboard />
-						</PrivateAuthRoute>
-					}
-				/>
+          path="/admin"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <Dashboard />
+            </PrivateAuthRoute>
+          }
+        />
         <Route path="/admin/employees" element={<Employees />} />
         <Route path="/admin/orders" element={<Orders />} />
         <Route path="/admin/services" element={<Service />} />
@@ -51,7 +51,6 @@ function App() {
       <Footer />
     </>
   );
-
 }
 
 export default App;
