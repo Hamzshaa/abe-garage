@@ -14,6 +14,11 @@ import {
   // Area,
   // AreaChart,
   ResponsiveContainer,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
   //   ResponsiveContainer,
 } from "recharts";
 
@@ -33,16 +38,19 @@ import BarChartComponent from "../components/Admin/Charts/BarChartComponent";
 export default function fourOFour() {
   const [data, setData] = useState([]); // eslint-disable-line
   const [areaData, setAreaData] = useState([]); // eslint-disable-line
+  const [radarData, setRadarData] = useState(); // eslint-disable-line
 
   const employee_token = localStorage.getItem("employee").split('"')[3];
   console.log(employee_token);
+
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZV9pZCI6MSwiZW1wbG95ZWVfZW1haWwiOiJqb2huQGRvZS5jb20iLCJlbXBsb3llZV9yb2xlIjozLCJlbXBsb3llZV9maXJzdF9uYW1lIjoiam9obiIsImlhdCI6MTcyMzQ3Njg3NywiZXhwIjoxNzIzNTYzMjc3fQ.aRWQ9Ak2C0SdbSI-RW2Xu-4lZyU6v_mfON15X4VHCSA";
 
   // eslint-disable-next-line
   useEffect(() => {
     fetch("http://localhost:8000/api/charts/customer/line", {
       headers: {
-        "x-access-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZV9pZCI6MSwiZW1wbG95ZWVfZW1haWwiOiJqb2huQGRvZS5jb20iLCJlbXBsb3llZV9yb2xlIjozLCJlbXBsb3llZV9maXJzdF9uYW1lIjoiam9obiIsImlhdCI6MTcyMzMwNzgwMSwiZXhwIjoxNzIzMzk0MjAxfQ.pexF_rLVGf1h2FVId4tNNYc5ef-cWtYAYqWoLIhEcb0",
+        "x-access-token": token,
       },
     })
       .then((res) => res.json())
@@ -57,14 +65,28 @@ export default function fourOFour() {
   useEffect(() => {
     fetch("http://localhost:8000/api/charts/customer/area", {
       headers: {
-        "x-access-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZV9pZCI6MSwiZW1wbG95ZWVfZW1haWwiOiJqb2huQGRvZS5jb20iLCJlbXBsb3llZV9yb2xlIjozLCJlbXBsb3llZV9maXJzdF9uYW1lIjoiam9obiIsImlhdCI6MTcyMzMwNzgwMSwiZXhwIjoxNzIzMzk0MjAxfQ.pexF_rLVGf1h2FVId4tNNYc5ef-cWtYAYqWoLIhEcb0",
+        "x-access-token": token,
       },
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         setAreaData(data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // eslint-disable-next-line
+  useEffect(() => {
+    fetch("http://localhost:8000/api/charts/order/radar", {
+      headers: {
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setRadarData(data.data);
       })
       .catch((err) => console.error(err));
   }, []);

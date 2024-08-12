@@ -51,7 +51,6 @@ async function getCustomerAreaChartData() {
         FROM customer_identifier
         WHERE DATE(customer_added_date) <= ?;
       `;
-      
 
       const params = [formattedDate];
       let customers = await db.query(customerQuery, params);
@@ -80,7 +79,35 @@ async function getCustomerAreaChartData() {
   return result;
 }
 
+async function getOrderRadarChartData() {
+  // order_services table has the order_service_id, order_id, service_id and common_services table containes the service_id and service_name, so we need to join these two tables to get the service name and count for each service, I want to know how many orders have been for each service
+
+  // I want the data to be in the following format:
+  //  const data = [
+  //   {
+  //     Service name: 'Math',
+  //     completed: 120,
+  //     on progress: 110,
+  //     total orders: 150,
+  //   },
+  // ]
+
+  const query = `
+      SELECT service_name,
+            COUNT(order_id) AS total_orders
+      FROM order_services
+      INNER JOIN common_services
+      ON order_services.service_id = common_services.service_id
+      GROUP BY service_name;
+    `;
+
+  const rows = await db.query(query);
+
+  return rows;
+}
+
 module.exports = {
   getCustomerLineChartData,
   getCustomerAreaChartData,
+  getOrderRadarChartData,
 };

@@ -15,4 +15,10 @@ router.get(
   chartController.customerAreaChart
 );
 
+router.get(
+  "/api/charts/order/radar",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  chartController.orderRadarChart
+);
+
 module.exports = router;

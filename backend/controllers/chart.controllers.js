@@ -32,7 +32,24 @@ async function customerAreaChart(req, res, next) {
   }
 }
 
+async function orderRadarChart(req, res, next) {
+  const data = await chartService.getOrderRadarChartData();
+
+  try {
+    return res.status(200).json({
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error in customerLineChart controller:", error);
+    return res.status(500).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
 module.exports = {
   customerLineChart,
   customerAreaChart,
+  orderRadarChart,
 };
