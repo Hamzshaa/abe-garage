@@ -7,8 +7,6 @@ const corsOptions = {
   origin: process.env.FRONTEND_URL,
   optionsSuccessStatus: 200,
 };
-// console.log("PORT:", process.env.PORT);
-// console.log("DB_PASS:", process.env.DB_PASS);
 
 
 const router = require("./routes");

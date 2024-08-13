@@ -17,9 +17,6 @@ async function query(sql, params) {
   return rows;
 }
 
-// This function will allow you to get a connection from the pool
-function getConnection() {
-  return pool.getConnection();
-}
 
 module.exports = { query, getConnection };
+

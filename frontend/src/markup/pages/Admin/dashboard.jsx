@@ -1,7 +1,7 @@
-import AddEmployeeForm from "../../components/Admin/AddEmployeeForm/AddEmployeeForm";
-import AdminMenu from "../../components/Admin/EmployeesList/AdminMenu/AdminMenu";
+import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
+import AdminDashboard from "../../components/Admin/Dashboard/dashboard";
 
-function AddEmployee() {
+function Dashboard() {
   return (
     <div>
       <div className="container-fluid admin-pages">
@@ -10,7 +10,7 @@ function AddEmployee() {
             <AdminMenu />
           </div>
           <div className="col-md-9 admin-right-side">
-            <AddEmployeeForm />
+            <AdminDashboard />
           </div>
         </div>
       </div>
@@ -18,4 +18,4 @@ function AddEmployee() {
   );
 }
 
-export default AddEmployee;
+export default Dashboard;

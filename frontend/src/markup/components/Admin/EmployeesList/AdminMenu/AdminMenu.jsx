@@ -1,5 +1,6 @@
-import React from "react";
+import propTypes from "prop-types";
 
+// eslint-disable-next-line
 function AdminMenu(props) {
   return (
     <div>
@@ -37,3 +38,7 @@ function AdminMenu(props) {
 }
 
 export default AdminMenu;
+
+AdminMenu.propTypes = {
+  props: propTypes.object, 
+};

@@ -1,7 +1,15 @@
 // Import the database configuration
 const db = require("../config/db.config");
 
+const crypto = require("crypto");
+
+/**
+ * Check if a customer exists by email.
+ * @param {string} email - The email of the customer to check.
+ * @returns {boolean} - True if the customer exists, false otherwise.
+ */
 async function checkIfCustomerExists(email) {
+
 	try {
 		const query = "SELECT * FROM customer_identifier WHERE customer_email = ?";
 		const rows = await db.query(query, [email]);
@@ -18,12 +26,17 @@ async function checkIfCustomerExists(email) {
  * @returns {object|boolean} - The new customer ID if successful, false otherwise.
  */
 async function createCustomer(customer) {
+
+	const customer_hash = crypto.randomBytes(16).toString("hex").slice(0, 32);
+
 	try {
 		const query =
-			"INSERT INTO customer_identifier (customer_email, customer_phone_number) VALUES (?, ?)";
+			"INSERT INTO customer_identifier (customer_email, customer_phone_number, customer_hash) VALUES (?, ?, ?)";
 		const result = await db.query(query, [
 			customer.customer_email,
 			customer.customer_phone_number,
+			customer_hash,
+
 		]);
 		// If the insert into customer_identifier table failed, return false
 		if (result.affectedRows !== 1) {
@@ -54,6 +67,7 @@ async function getAllCustomers() {
 	try {
 		const query =
 			"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id ORDER BY customer_identifier.customer_added_date DESC";
+
 		const rows = await db.query(query);
 		return rows;
 	} catch (err) {
@@ -91,6 +105,7 @@ async function updateCustomer(customerId, updatedData) {
 			"UPDATE customer_identifier SET customer_phone_number = ? WHERE customer_id = ?";
 		const result = await db.query(query, [
 			updatedData.phone_number,
+
 			customerId,
 		]);
 		// If the update in the customer_identifier table failed, return false
@@ -109,7 +124,7 @@ async function updateCustomer(customerId, updatedData) {
 		console.error("Error in updateCustomer service:", err);
 		throw err;
 	}
-}
+
 async function deleteCustomer(customerId) {
   let connection;
 
@@ -148,6 +163,7 @@ async function deleteCustomer(customerId) {
   } finally {
     if (connection) connection.release();
   }
+
 }
 
 

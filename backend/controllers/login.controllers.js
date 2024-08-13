@@ -46,9 +46,10 @@ async function logIn(req, res, next) {
       message: "Internal Server Error",
     })
   }
+
 }
 
 // Export the functions
 module.exports = {
-  logIn,
+	logIn,
 };

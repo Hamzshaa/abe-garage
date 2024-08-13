@@ -11,9 +11,16 @@
     "start": "vite"
   },
   "dependencies": {
-    "@mui/icons-material": "^5.16.6",
     "axios": "^1.7.3",
+    "bootstrap": "^5.3.3",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/base": "^5.0.0-beta.40",
+    "@mui/icons-material": "^5.16.7",
+    "@mui/material": "^5.16.7",
+    "@mui/system": "^5.16.7",
     "date-fns": "^3.6.0",
+    "mdb-react-ui-kit": "^8.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
