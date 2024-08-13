@@ -17,24 +17,61 @@ import Services from "./markup/pages/Services";
 import Orders from "./markup/pages/Orders/Orders";
 import EditService from "./markup/components/Admin/EditService/EditService";
 import Dashboard from "./markup/pages/Admin/dashboard";
+import Customers from "./markup/pages/Admin/Customers";
+import AddCustomer from "./markup/pages/Admin/AddCustomer";
+import EditCustomer from "./markup/pages/Admin/EditCustomer";
+
 
 function App() {
-  return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route
-          path="/admin/add-employee"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <AddEmployee />
-            </PrivateAuthRoute>
-          }
-        />
+	return (
+		<>
+			<Header />
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/services" element={<Services />} />
+				<Route path="/unauthorized" element={<Unauthorized />} />
+				<Route
+					path="/admin/add-employee"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<AddEmployee />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route path="/admin/employees" element={<Employees />} />
+				<Route
+					path="/admin/add-customer"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<AddCustomer />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin/customers"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<Customers />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/manager/customers"
+					element={
+						<PrivateAuthRoute roles={[2]}>
+							<Customers />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin/edit-customer/:customerId"
+					element={
+						<PrivateAuthRoute roles={[2]}>
+							<EditCustomer />
+						</PrivateAuthRoute>
+					}
+				/>
         <Route
           path="/admin"
           element={
@@ -43,14 +80,13 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-        <Route path="/admin/employees" element={<Employees />} />
         <Route path="/admin/orders" element={<Orders />} />
         <Route path="/admin/services" element={<Service />} />
         <Route path="/services/edit/:id" element={<EditService />} />
-      </Routes>
-      <Footer />
-    </>
-  );
+			</Routes>
+			<Footer />
+		</>
+	);
 }
 
 export default App;
