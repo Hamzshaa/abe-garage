@@ -19,11 +19,17 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   Radar,
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
   //   ResponsiveContainer,
 } from "recharts";
 
 import AreaChartComponent from "../components/Admin/Charts/AreaChartComponent";
 import BarChartComponent from "../components/Admin/Charts/BarChartComponent";
+import PieChartComponent from "../components/Admin/Charts/PieChartComponent";
+import RadarChartComponent from "../components/Admin/Charts/RadarChartComponent";
 
 // const data = [
 //   { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
@@ -39,6 +45,8 @@ export default function fourOFour() {
   const [data, setData] = useState([]); // eslint-disable-line
   const [areaData, setAreaData] = useState([]); // eslint-disable-line
   const [radarData, setRadarData] = useState(); // eslint-disable-line
+  const [pieData, setPieData] = useState(); // eslint-disable-line
+  const [barData, setBarData] = useState(); // eslint-disable-line
 
   const employee_token = localStorage.getItem("employee").split('"')[3];
   console.log(employee_token);
@@ -57,6 +65,21 @@ export default function fourOFour() {
       .then((data) => {
         console.log(data);
         setData(data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // eslint-disable-next-line
+  useEffect(() => {
+    fetch("http://localhost:8000/api/charts/customer/bar", {
+      headers: {
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setBarData(data.data);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -91,8 +114,24 @@ export default function fourOFour() {
       .catch((err) => console.error(err));
   }, []);
 
+  // eslint-disable-next-line
+  useEffect(() => {
+    fetch("http://localhost:8000/api/charts/order/pie", {
+      headers: {
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setPieData(data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   const style = { width: "600px", height: "300px", backgroundColor: "#d6dfe3" };
 
+  console.log("Pie Data", pieData);
   return (
     <>
       <div style={style}>
@@ -127,17 +166,28 @@ export default function fourOFour() {
         </ResponsiveContainer>
       </div>
       <BarChartComponent
-        data={data}
-        chart1={{ color: "#8884d8", dataKey: "count" }}
+        data={barData}
+        chart1={{ color: "#8884d8", dataKey: "customers" }}
+        chart2={{ color: "#82ca9d", dataKey: "vehicles" }}
+        chart3={{ color: "#ffc658", dataKey: "orders" }}
         title="30-Day Performance Overview"
       />
 
       <AreaChartComponent
         areaData={areaData}
-        chart1={{ color: "#28ac3c", dataKey: "totalCustomers" }}
-        chart2={{ color: "#d176cf", dataKey: "totalVehicles" }}
+        chart1={{ color: "#8884d8", dataKey: "Total customers" }}
+        chart2={{ color: "#82ca9d", dataKey: "Total vehicles" }}
+        chart3={{ color: "#ffc658", dataKey: "Total orders" }}
         title="30-Day Performance Overview"
       />
+      <RadarChartComponent
+        data={radarData}
+        chart1={{ color: "#60e64c", dataKey: "completed_orders" }}
+        // chart2={{ color: "#e26d50", dataKey: "inprogress_orders" }}
+        chart3={{ color: "#58ffec", dataKey: "total_orders" }}
+      />
+
+      <PieChartComponent data={pieData} />
     </>
   );
 }

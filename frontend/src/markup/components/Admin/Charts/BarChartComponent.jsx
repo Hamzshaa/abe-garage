@@ -136,10 +136,10 @@ export default function BarChartComponent({
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                <Legend
+                {/* <Legend
                   verticalAlign="top"
                   wrapperStyle={{ lineHeight: "40px" }}
-                />
+                /> */}
                 <ReferenceLine y={0} stroke="#000" />
                 <Brush
                   dataKey="count"
