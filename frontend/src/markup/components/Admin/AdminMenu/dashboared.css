@@ -1,0 +1,20 @@
+/* App.css */
+.dashboard-box {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+}
+
+.card {
+  min-height: 200px;
+}
+
+.card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

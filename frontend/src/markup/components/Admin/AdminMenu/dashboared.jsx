@@ -1,111 +1,75 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import "./dashboared.css"; 
 
-function AdminDashboard() {
+function Dashboard() {
 	return (
-		<>
-			<section className="services-section">
-				<div className="auto-container">
-					<div className="sec-title style-two">
-						<h2>Admin Dashboard</h2>
-						<div className="text">
-							Bring to the table win-win survival strategies to ensure proactive
-							domination. At the end of the day, going forward, a new normal
-							that has evolved from generation X is on the runway heading
-							towards a streamlined cloud solution.
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>open for all</h5>
-								<h2>All Orders</h2>
-								<Link to="/admin/order/orders" className="read-more">
-									LIST OF ORDERS +
-								</Link>
-								<div className="icon">
-									<span className="flaticon-power"></span>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>OPEN FOR LEADS</h5>
-								<h2>New orders</h2>
-								<Link to="/admin/order/new-order" className="read-more">
-									ADD ORDER +
-								</Link>
-								<div className="icon">
-					
-									<span className="flaticon-gearbox"></span>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>OPEN FOR ADMINS</h5>
-								<h2>Add Employees</h2>
-								<Link to="/admin/employee/add-employee" className="read-more">
-									add employee+
-								</Link>
-								<div className="icon">
-									<span className="flaticon-car-engine"></span>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>OPEN FOR ADMINS</h5>
-								<h2>Employees</h2>
-								<Link to="/admin/employee/employees" className="read-more">
-									list of employees +
-								</Link>
-								<div className="icon">
-									<span className="flaticon-brake-disc"></span>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>OPEN FOR ADMIN</h5>
-								<h2>Add Customers</h2>
-								<Link to="/admin/customer/add-customer" className="read-more">
-									read more +
-								</Link>
-								<div className="icon">
-									<span className="flaticon-spray-gun"></span>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>OPEN FOR EMOPLOYEE</h5>
-								<h2>Customers</h2>
-								<Link to="/admin/customer/customers" className="read-more">
-									CUSTOMERS LIST +
-								</Link>
-								<div className="icon">
-									<span className="flaticon-tire"></span>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 service-block-one">
-							<div className="inner-box hvr-float-shadow">
-								<h5>OPEN FOR ADMIN</h5>
-								<h2>Services</h2>
-								<Link to="/admin/services/services" className="read-more">
-									LIST OF +
-								</Link>
-								<div className="icon">
-									<span className="flaticon-spray-gun"></span>
-								</div>
-							</div>
-						</div>
-					</div>
+		<Container fluid className="p-3">
+			<div className="sec-title style-two">
+				<h2>Admin Dashboard</h2>
+				<div className="text">
+					Bring to the table win-win survival strategies to ensure proactive
+					domination. At the end of the day, going forward, a new normal that
+					has evolved from generation X is on the runway heading towards a
+					streamlined cloud solution.
 				</div>
-			</section>
-		</>
+			</div>
+			{/* First Row */}
+			<Row className="mb-3">
+				<Col md={9} xs={12} className="mb-3">
+					<Card className="h-100">
+						<Card.Body className="d-flex justify-content-between">
+							{/* Replace with your content */}
+							<div className="dashboard-box">All Orders</div>
+							<div className="dashboard-box">New Orders</div>
+							<div className="dashboard-box">Add Employees</div>
+							<div className="dashboard-box">Employees</div>
+						</Card.Body>
+					</Card>
+				</Col>
+				<Col md={3} xs={12} className="mb-3">
+					<Card className="h-100">
+						<Card.Body>
+							{/* Replace with your circular graph content */}
+							Circular Graph
+						</Card.Body>
+					</Card>
+				</Col>
+			</Row>
+
+			{/* Second Row */}
+			<Row className="mb-3">
+				<Col md={9} xs={12} className="mb-3">
+					<Card className="h-100">
+						<Card.Body>
+							{/* Replace with your bar chart content */}
+							Bar Chart
+						</Card.Body>
+					</Card>
+				</Col>
+				<Col md={3} xs={12} className="mb-3">
+					<Card className="h-100">
+						<Card.Body>
+							{/* Replace with your radar chart content */}
+							Radar Chart
+						</Card.Body>
+					</Card>
+				</Col>
+			</Row>
+
+			{/* Third Row */}
+			<Row>
+				<Col xs={12}>
+					<Card className="h-100">
+						<Card.Body>
+							{/* Replace with your line chart or graph content */}
+							Line Chart
+						</Card.Body>
+					</Card>
+				</Col>
+			</Row>
+		</Container>
 	);
 }
 
-export default AdminDashboard;
+export default Dashboard;
