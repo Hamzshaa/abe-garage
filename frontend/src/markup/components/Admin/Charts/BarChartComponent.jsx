@@ -32,10 +32,10 @@ export default function BarChartComponent({
   console.log(chart1);
 
   return (
-    <div className="container-fluid bg-dark">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-12">
-          <h2 className="text-center text-white">{title}</h2>
+          <h2 className="text-center ">{title}</h2>
           <div className="text-center d-flex justify-content-center gap-1 pt-4">
             {chart1 && (
               <div
@@ -119,7 +119,7 @@ export default function BarChartComponent({
       </div>
       <div className="row">
         <div className="col-lg-12">
-          <div style={{ width: "100%", height: "400px" }}>
+          <div style={{ width: "100%", height: "300px" }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 width={500}
@@ -134,7 +134,7 @@ export default function BarChartComponent({
               >
                 {/* <CartesianGrid strokeDasharray="3 3" /> */}
                 <XAxis dataKey="date" />
-                <YAxis />
+                {/* <YAxis /> */}
                 <Tooltip />
                 {/* <Legend
                   verticalAlign="top"
@@ -144,9 +144,9 @@ export default function BarChartComponent({
                 <Brush
                   dataKey="count"
                   height={15}
-                  stroke="#323232"
-                  color="#f8ebeb"
-                  fill="#888"
+                  stroke="#9a999990"
+                  color="#a3a0a076"
+                  fill="#c9c8c887"
                 />
                 {showChart1 && (
                   <Bar dataKey={chart1?.dataKey} fill={chart1?.color} />

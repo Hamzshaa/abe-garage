@@ -91,43 +91,50 @@ export default function PieChartComponent({ data }) {
   return (
     <>
       <div
-        style={{ display: "flex", flexDirection: "column", height: "600px" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "fit-content",
+          width: "100%",
+        }}
       >
-        <div
+        {/* <div
           className="w-full h-full align-center flex justify-center"
           style={{ width: "500px", height: "300px", marginInline: "auto" }}
-        >
-          <ResponsiveContainer width="99%" height={300}>
-            <PieChart>
-              {/* <Tooltip
+        > */}
+        <ResponsiveContainer width="99%" height={300}>
+          <PieChart>
+            {/* <Tooltip
               contentStyle={{ background: "white", borderRadius: "5px" }}
             /> */}
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={data}
-                onMouseEnter={onPieEnter}
-                dataKey="count"
-                nameKey="status"
-                innerRadius={"70"}
-                outerRadius={"90"}
-                paddingAngle={5}
-              >
-                {data?.map((item) => (
-                  <Cell key={item.status} fill={item.color} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+            <Pie
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              data={data}
+              onMouseEnter={onPieEnter}
+              dataKey="count"
+              nameKey="status"
+              innerRadius={"70"}
+              outerRadius={"90"}
+              paddingAngle={5}
+            >
+              {data?.map((item) => (
+                <Cell key={item.status} fill={item.color} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+        {/* </div> */}
 
         <div
           style={{
-            backgroundColor: "#d6cfcf",
+            // backgroundColor: "#d6cfcf",
             display: "flex",
+            // flexDirection: "column",
+
             justifyContent: "space-between",
             height: "fit-content",
-            width: "500px",
+            // width: "500px",
             marginInline: "auto",
           }}
         >
@@ -136,23 +143,25 @@ export default function PieChartComponent({ data }) {
               <div
                 style={{
                   display: "flex",
+                  gap: "5px",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  // align the child
                   padding: "10px",
                 }}
               >
                 <div
                   style={{
-                    width: "20px",
-                    height: "20px",
+                    width: "10px",
+                    height: "10px",
                     backgroundColor: item.color,
                     borderRadius: "10%",
                   }}
                 ></div>
                 <p
                   style={{
-                    fontSize: "1.2rem",
+                    fontSize: "0.8rem",
                   }}
                 >
                   {item.status}

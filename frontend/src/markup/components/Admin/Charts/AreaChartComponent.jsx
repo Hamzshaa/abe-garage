@@ -28,10 +28,10 @@ export default function AreaChartComponent({
   };
 
   return (
-    <div className="container-fluid bg-dark">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-12">
-          <h2 className="text-center text-white">{title}</h2>
+          <h2 className="text-center">{title}</h2>
           <div className="text-center d-flex justify-content-center gap-1 pt-4">
             {chart1 && (
               <div
@@ -159,9 +159,9 @@ export default function AreaChartComponent({
                 <Brush
                   dataKey="name"
                   height={15}
-                  stroke="#323232"
-                  color="#f8ebeb"
-                  fill="#888"
+                  stroke="#9a999990"
+                  color="#a3a0a076"
+                  fill="#c9c8c887"
                 />
               </AreaChart>
             </ResponsiveContainer>
