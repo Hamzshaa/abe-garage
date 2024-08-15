@@ -14,43 +14,48 @@ import Home from "./markup/pages/Home";
 import Employees from "./markup/pages/Admin/Employees";
 import Service from "./markup/pages/Admin/Services";
 import Services from "./markup/pages/Services";
+import About from "./markup/pages/About.jsx";
 import Orders from "./markup/pages/Orders/Orders";
 import EditService from "./markup/components/Admin/EditService/EditService";
 import Dashboard from "./markup/pages/Admin/dashboard";
+import Contact from "./markup/pages/Contact.jsx";
 
 function App() {
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route
-          path="/admin/add-employee"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <AddEmployee />
-            </PrivateAuthRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <PrivateAuthRoute roles={[3]}>
-              <Dashboard />
-            </PrivateAuthRoute>
-          }
-        />
-        <Route path="/admin/employees" element={<Employees />} />
-        <Route path="/admin/orders" element={<Orders />} />
-        <Route path="/admin/services" element={<Service />} />
-        <Route path="/services/edit/:id" element={<EditService />} />
-      </Routes>
-      <Footer />
-    </>
-  );
+		<>
+			<Header />
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/services" element={<Services />} />
+				<Route path="/About" element={<About />} />
+				<Route path="/Contact" element={<Contact />} />
+
+				<Route path="/unauthorized" element={<Unauthorized />} />
+				<Route
+					path="/admin/add-employee"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<AddEmployee />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route
+					path="/admin"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<Dashboard />
+						</PrivateAuthRoute>
+					}
+				/>
+				<Route path="/admin/employees" element={<Employees />} />
+				<Route path="/admin/orders" element={<Orders />} />
+				<Route path="/admin/services" element={<Service />} />
+				<Route path="/services/edit/:id" element={<EditService />} />
+			</Routes>
+			<Footer />
+		</>
+	);
 }
 
 export default App;
