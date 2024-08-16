@@ -1,5 +1,6 @@
 // Import the database configuration
 const db = require("../config/db.config");
+
 const crypto = require("crypto");
 
 /**
@@ -18,12 +19,14 @@ async function checkIfCustomerExists(email) {
 		throw err;
 	}
 }
+
 /**
  * Create a new customer.
  * @param {object} customer - The customer data to create.
  * @returns {object|boolean} - The new customer ID if successful, false otherwise.
  */
 async function createCustomer(customer) {
+
 	const customer_hash = crypto.randomBytes(16).toString("hex").slice(0, 32);
 
 	try {
@@ -33,6 +36,7 @@ async function createCustomer(customer) {
 			customer.customer_email,
 			customer.customer_phone_number,
 			customer_hash,
+
 		]);
 		// If the insert into customer_identifier table failed, return false
 		if (result.affectedRows !== 1) {
@@ -54,6 +58,7 @@ async function createCustomer(customer) {
 		throw err;
 	}
 }
+
 /**
  * Retrieve all customers.
  * @returns {Array} - An array of all customers.
@@ -61,7 +66,8 @@ async function createCustomer(customer) {
 async function getAllCustomers() {
 	try {
 		const query =
-			"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id";
+			"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id ORDER BY customer_identifier.customer_added_date DESC";
+
 		const rows = await db.query(query);
 		return rows;
 	} catch (err) {
@@ -69,6 +75,7 @@ async function getAllCustomers() {
 		throw err;
 	}
 }
+
 /**
  * Retrieve a customer by their ID.
  * @param {number} customerId - The ID of the customer to retrieve.
@@ -85,6 +92,7 @@ async function getCustomerById(customerId) {
 		throw err;
 	}
 }
+
 /**
  * Update a customer by their ID.
  * @param {number} customerId - The ID of the customer to update.
@@ -94,10 +102,10 @@ async function getCustomerById(customerId) {
 async function updateCustomer(customerId, updatedData) {
 	try {
 		const query =
-			"UPDATE customer_identifier SET customer_email = ?, customer_phone_number = ? WHERE customer_id = ?";
+			"UPDATE customer_identifier SET customer_phone_number = ? WHERE customer_id = ?";
 		const result = await db.query(query, [
-			updatedData.customer_email,
-			updatedData.customer_phone_number,
+			updatedData.phone_number,
+
 			customerId,
 		]);
 		// If the update in the customer_identifier table failed, return false
@@ -105,11 +113,10 @@ async function updateCustomer(customerId, updatedData) {
 			return false;
 		}
 		const query2 =
-			"UPDATE customer_info SET customer_first_name = ?, customer_last_name = ?, active_customer_status = ? WHERE customer_id = ?";
+			"UPDATE customer_info SET customer_first_name = ?, customer_last_name = ? WHERE customer_id = ?";
 		await db.query(query2, [
-			updatedData.customer_first_name,
-			updatedData.customer_last_name,
-			updatedData.active_customer_status,
+			updatedData.first_name,
+			updatedData.last_name,
 			customerId,
 		]);
 		return true;
@@ -117,7 +124,50 @@ async function updateCustomer(customerId, updatedData) {
 		console.error("Error in updateCustomer service:", err);
 		throw err;
 	}
+
+async function deleteCustomer(customerId) {
+  let connection;
+
+  try {
+    // Get a connection from the pool
+    connection = await db.getConnection();
+
+    // Begin transaction
+    await connection.beginTransaction();
+
+    // Delete from customer_info table
+    const deleteCustomerInfoQuery = "DELETE FROM customer_info WHERE customer_id = ?";
+    const [result1] = await connection.query(deleteCustomerInfoQuery, [customerId]);
+
+    if (result1.affectedRows !== 1) {
+      await connection.rollback();
+      return false;
+    }
+
+    // Delete from customer_identifier table
+    const deleteCustomerIdentifierQuery = "DELETE FROM customer_identifier WHERE customer_id = ?";
+    const [result2] = await connection.query(deleteCustomerIdentifierQuery, [customerId]);
+
+    if (result2.affectedRows !== 1) {
+      await connection.rollback();
+      return false;
+    }
+
+    // Commit transaction
+    await connection.commit();
+    return true;
+  } catch (err) {
+    if (connection) await connection.rollback();
+    console.error("Error in deleteCustomer service:", err);
+    throw err;
+  } finally {
+    if (connection) connection.release();
+  }
+
 }
+
+
+
 // Export the service functions to be used in controllers
 module.exports = {
 	checkIfCustomerExists,
@@ -125,4 +175,5 @@ module.exports = {
 	getAllCustomers,
 	getCustomerById,
 	updateCustomer,
+	deleteCustomer, // Add this line to export the deleteCustomer function
 };

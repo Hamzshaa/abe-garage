@@ -113,6 +113,9 @@ input:disabled {
   width: 20px;
   height: 20px;
 }
+.active-label {
+	padding-left: 10px;
+}
 .form-bold-header {
   font-weight: 600;
   font-size: 1.5em;

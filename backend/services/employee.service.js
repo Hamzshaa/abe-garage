@@ -12,7 +12,6 @@ async function checkIfEmployeeExists(email) {
 	}
 	return false;
 }
-
 // A function to create a new employee
 async function createEmployee(employee) {
 	let createdEmployee = {};
