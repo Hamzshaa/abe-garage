@@ -9,6 +9,9 @@ import Header from "./markup/components/Header/Header";
 import Footer from "./markup/components/Footer/Footer";
 import AddEmployee from "./markup/pages/Admin/AddEmployee";
 import Unauthorized from "./markup/pages/Unauthorized";
+import DataTable from "./markup/components/Admin/EmployeesList/DataTable";
+
+
 import PrivateAuthRoute from "./markup/components/Auth/PrivateAuthRoute";
 import Home from "./markup/pages/Home";
 import Employees from "./markup/pages/Admin/Employees";
@@ -20,6 +23,7 @@ import Dashboard from "./markup/pages/Admin/dashboard";
 import Customers from "./markup/pages/Admin/Customers";
 import AddCustomer from "./markup/pages/Admin/AddCustomer";
 import EditCustomer from "./markup/pages/Admin/EditCustomer";
+import UpdateEmployees from "./markup/pages/Admin/UpdateEmployees";
 
 
 function App() {
@@ -28,6 +32,7 @@ function App() {
 			<Header />
 			<Routes>
 				<Route path="/" element={<Home />} />
+				{/* <Route path="/data" element={<DataTable />} /> */}
 				<Route path="/login" element={<Login />} />
 				<Route path="/services" element={<Services />} />
 				<Route path="/unauthorized" element={<Unauthorized />} />
@@ -39,8 +44,9 @@ function App() {
 						</PrivateAuthRoute>
 					}
 				/>
+
 				<Route path="/admin/employees" element={<Employees />} />
-				<Route
+        <Route
 					path="/admin/add-customer"
 					element={
 						<PrivateAuthRoute roles={[3]}>
@@ -83,6 +89,14 @@ function App() {
         <Route path="/admin/orders" element={<Orders />} />
         <Route path="/admin/services" element={<Service />} />
         <Route path="/services/edit/:id" element={<EditService />} />
+					<Route path="/admin/employee/edit/:id"
+					element={
+						<PrivateAuthRoute roles={[3]}>
+							<UpdateEmployees />
+						</PrivateAuthRoute>
+					}
+				/>
+				
 			</Routes>
 			<Footer />
 		</>
