@@ -9,6 +9,10 @@ function Dashboard() {
           <div className="col-md-3 admin-left-side">
             <AdminMenu />
           </div>
+          <div
+            className="col-md-9 admin-right-side"
+            style={{ backgroundColor: "#dae3f0" }}
+          >
           <div className="col-md-9 admin-right-side">
             <AdminDashboard />
           </div>

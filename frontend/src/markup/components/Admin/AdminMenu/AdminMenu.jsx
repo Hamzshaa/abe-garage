@@ -1,6 +1,5 @@
-import React from "react";
+function AdminMenu() {
 
-function AdminMenu(props) {
   return (
     <div>
       <div className="admin-menu">

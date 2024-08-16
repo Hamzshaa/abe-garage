@@ -90,21 +90,15 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-        <Route path="/admin/orders" element={<Orders />} />
-        <Route path="/admin/services" element={<Service />} />
-        <Route path="/services/edit/:id" element={<EditService />} />
-					<Route path="/admin/employee/edit/:id"
-					element={
-						<PrivateAuthRoute roles={[3]}>
-							<UpdateEmployees />
-						</PrivateAuthRoute>
-					}
-				/>
-				
-			</Routes>
-			<Footer />
-		</>
-	);
+        <Route
+          path="/admin"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <Dashboard />
+            </PrivateAuthRoute>
+          }
+        />
+
 }
 
 export default App;

@@ -9,15 +9,14 @@ const crypto = require("crypto");
  * @returns {boolean} - True if the customer exists, false otherwise.
  */
 async function checkIfCustomerExists(email) {
-
-	try {
-		const query = "SELECT * FROM customer_identifier WHERE customer_email = ?";
-		const rows = await db.query(query, [email]);
-		return rows.length > 0;
-	} catch (err) {
-		console.error("Error in checkIfCustomerExists service:", err);
-		throw err;
-	}
+  try {
+    const query = "SELECT * FROM customer_identifier WHERE customer_email = ?";
+    const rows = await db.query(query, [email]);
+    return rows.length > 0;
+  } catch (err) {
+    console.error("Error in checkIfCustomerExists service:", err);
+    throw err;
+  }
 }
 
 /**
@@ -26,6 +25,7 @@ async function checkIfCustomerExists(email) {
  * @returns {object|boolean} - The new customer ID if successful, false otherwise.
  */
 async function createCustomer(customer) {
+
 
 	const customer_hash = crypto.randomBytes(16).toString("hex").slice(0, 32);
 
@@ -51,12 +51,12 @@ async function createCustomer(customer) {
 			customer.customer_last_name,
 			customer.active_customer_status,
 		]);
-
-		return { customer_id: customerId };
-	} catch (err) {
-		console.error("Error in createCustomer service:", err);
-		throw err;
-	}
+    
+    return { customer_id: customerId };
+  } catch (err) {
+    console.error("Error in createCustomer service:", err);
+    throw err;
+  }
 }
 
 /**
@@ -64,6 +64,7 @@ async function createCustomer(customer) {
  * @returns {Array} - An array of all customers.
  */
 async function getAllCustomers() {
+
 	try {
 		const query =
 			"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id ORDER BY customer_identifier.customer_added_date DESC";
@@ -82,15 +83,15 @@ async function getAllCustomers() {
  * @returns {object|null} - The customer data if found, null otherwise.
  */
 async function getCustomerById(customerId) {
-	try {
-		const query =
-			"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id WHERE customer_identifier.customer_id = ?";
-		const rows = await db.query(query, [customerId]);
-		return rows.length > 0 ? rows[0] : null;
-	} catch (err) {
-		console.error("Error in getCustomerById service:", err);
-		throw err;
-	}
+  try {
+    const query =
+      "SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id WHERE customer_identifier.customer_id = ?";
+    const rows = await db.query(query, [customerId]);
+    return rows.length > 0 ? rows[0] : null;
+  } catch (err) {
+    console.error("Error in getCustomerById service:", err);
+    throw err;
+  }
 }
 
 /**
@@ -100,6 +101,7 @@ async function getCustomerById(customerId) {
  * @returns {boolean} - True if the update was successful, false otherwise.
  */
 async function updateCustomer(customerId, updatedData) {
+
 	try {
 		const query =
 			"UPDATE customer_identifier SET customer_phone_number = ? WHERE customer_id = ?";
@@ -175,5 +177,5 @@ module.exports = {
 	getAllCustomers,
 	getCustomerById,
 	updateCustomer,
-	deleteCustomer, // Add this line to export the deleteCustomer function
+	deleteCustomer,
 };
