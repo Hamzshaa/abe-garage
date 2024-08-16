@@ -128,7 +128,7 @@ function AddOrder() {
 			customer_id,
 			vehicle_id,
 			// order_description: "Some description about the order",
-			estimated_completion_date: "2023-04-28 18:27:02.380",
+			// estimated_completion_date: "2023-04-28 18:27:02.380",
 			completion_date: null,
 			// order_completed: 0,
 			active_order: 2,
