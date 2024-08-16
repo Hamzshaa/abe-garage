@@ -31,4 +31,11 @@ router.put(
   customerController.updateCustomer
 );
 
+// **Delete a customer by ID**
+router.delete(
+  "/api/customer/:id",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  customerController.deleteCustomer
+);
+
 module.exports = router;

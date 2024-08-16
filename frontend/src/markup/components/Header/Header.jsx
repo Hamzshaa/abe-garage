@@ -11,7 +11,7 @@ function Header() {
   const { isLogged, setIsLogged, employee, isAdmin } = useAuth();
   // console.log(useAuth());
 
-  console.log("isLogged", isLogged);
+  // console.log("isLogged", isLogged);
 
   // Log out event handler function
   const logOut = () => {
