@@ -28,14 +28,14 @@ async function addOrder(order) {
 		const order_id = row.insertId;
 		// Insert the remaining data in to the order_info and order_status tables
 		const query2 =
-			"INSERT INTO order_info (order_id, order_total_price, estimated_completion_date, completion_date, additional_request, notes_for_internal_use, notes_for_customer, additional_requests_completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		console.log(
-			`check for undefined columns total price${order.order_total_price}, completion date ${order.completion_date}, additional request${order.additional_request}, notes for internal use${order.notes_for_internal_use}, notes for customer${order.notes_for_customer}, additional request completed${order.additional_request_completed}, order id${order.order_id}`
-		);
+			"INSERT INTO order_info (order_id, order_total_price, completion_date, additional_request, notes_for_internal_use, notes_for_customer, additional_requests_completed) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		// console.log(
+		// 	`check for undefined columns total price${order.order_total_price}, completion date ${order.completion_date}, additional request${order.additional_request}, notes for internal use${order.notes_for_internal_use}, notes for customer${order.notes_for_customer}, additional request completed${order.additional_request_completed}, order id${order.order_id}`
+		// );
 		await conn.query(query2, [
 			order_id,
 			order.order_total_price,
-			order.estimated_completion_date,
+			// order.estimated_completion_date,
 			order.completion_date || null,
 			order.additional_request || null,
 			order.notes_for_internal_use || null,
