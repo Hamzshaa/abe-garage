@@ -14,7 +14,6 @@ import Home from "./markup/pages/Home";
 import Employees from "./markup/pages/Admin/Employees";
 import Service from "./markup/pages/Admin/Services";
 import Services from "./markup/pages/Services";
-import Test from "./markup/pages/Test";
 import Orders from "./markup/pages/Orders/Orders";
 import EditService from "./markup/components/Admin/EditService/EditService";
 import Dashboard from "./markup/pages/Admin/dashboard";
@@ -25,7 +24,6 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/test" element={<Test />} />
         <Route path="/login" element={<Login />} />
         <Route path="/services" element={<Services />} />
         <Route path="/unauthorized" element={<Unauthorized />} />

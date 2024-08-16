@@ -1,12 +1,12 @@
 /* App.css */
 .dashboard-box {
-  flex: 1;
+  /* flex: 1;
   text-align: center;
   padding: 10px;
   margin: 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f8f9fa;
+  background-color: #f8f9fa; */
 }
 
 .card {
@@ -24,4 +24,17 @@
 .dash_card {
   border-radius: 20px;
   min-height: fit-content;
+}
+
+@media screen and (max-width: 1000px) {
+  .dash-card-percentage {
+    align-items: flex-start !important;
+    padding-left: 100px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .dash-card-title {
+    flex-direction: column;
+  }
 }

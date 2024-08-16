@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-// import { Container, Row, Col, Card } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+import { IoCarSport } from "react-icons/io5";
+import { MdBookmarkBorder } from "react-icons/md";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { FaPeopleCarryBox } from "react-icons/fa6";
+
+// import { Container, Row, Col, Card } from "react-sbootstrap";
 import "./dashboard.css";
 import PieChartComponent from "../Charts/PieChartComponent";
 import BarChartComponent from "../Charts/BarChartComponent";
@@ -7,15 +13,19 @@ import RadarChartComponent from "../Charts/RadarChartComponent";
 import AreaChartComponent from "../Charts/AreaChartComponent";
 
 import { useAuth } from "../../../../Contexts/AuthContext";
+import DashCard from "./DashCard";
 
 function Dashboard() {
   const [areaData, setAreaData] = useState([]);
   const [radarData, setRadarData] = useState();
   const [pieData, setPieData] = useState();
   const [barData, setBarData] = useState();
+  const [lineData, setLineData] = useState();
+
+  const api_url = import.meta.env.VITE_REACT_APP_API_URL;
 
   const { employee } = useAuth();
-  let token = null; // To store the token
+  let token = null;
   if (employee) {
     token = employee.employee_token.toString();
     console.log(employee);
@@ -23,7 +33,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/charts/order/pie", {
+    fetch(`${api_url}/api/charts/order/pie`, {
       headers: {
         "x-access-token": token,
       },
@@ -33,10 +43,10 @@ function Dashboard() {
         setPieData(data.data);
       })
       .catch((err) => console.error(err));
-  }, [token]);
+  }, [token, api_url]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/charts/customer/bar", {
+    fetch(`${api_url}/api/charts/customer/bar`, {
       headers: {
         "x-access-token": token,
       },
@@ -46,10 +56,10 @@ function Dashboard() {
         setBarData(data.data);
       })
       .catch((err) => console.error(err));
-  }, [token]);
+  }, [token, api_url]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/charts/order/radar", {
+    fetch(`${api_url}/api/charts/order/radar`, {
       headers: {
         "x-access-token": token,
       },
@@ -59,10 +69,10 @@ function Dashboard() {
         setRadarData(data.data);
       })
       .catch((err) => console.error(err));
-  }, [token]);
+  }, [token, api_url]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/charts/customer/area", {
+    fetch(`${api_url}/api/charts/customer/area`, {
       headers: {
         "x-access-token": token,
       },
@@ -73,35 +83,91 @@ function Dashboard() {
         setAreaData(data.data);
       })
       .catch((err) => console.error(err));
-  }, [token]);
+  }, [token, api_url]);
+
+  useEffect(() => {
+    fetch(`${api_url}/api/charts/line`, {
+      headers: {
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setLineData(data.data);
+      })
+      .catch((err) => console.error(err));
+  }, [token, api_url]);
 
   return (
     <div>
       <div className="row">
         {/* Row 1 */}
-        <div className="col-xl-8 col-12 mt-4 mb-2 ">
+        <div
+          className="row col-xl-8 col-12 mt-4 mb-2 "
+          style={{ margin: "auto" }}
+        >
           <div
             className=" bg-white py-3 dash_card row"
             style={{
               width: "98%",
               margin: "auto",
-              height: "90%",
+              // height: "90%",
             }}
           >
-            <div className="col-xl-6 py-2">
-              <div className="dashboard-box" style={{ height: "50%" }}>
-                All Orders
+            <div className="col-xl-6 py-2" style={{ height: "fit-content" }}>
+              <div className="dashboard-box mb-3" style={{ height: "50%" }}>
+                <DashCard
+                  width="100%"
+                  color="#86f02f"
+                  icon={<IoCarSport />}
+                  title="Total Vehicles"
+                  number={lineData?.totalVehicles}
+                  link="/vehicles"
+                  percentage={10}
+                  chartData={lineData?.data}
+                  dataKey="Total vehicles"
+                />
               </div>
               <div className="dashboard-box" style={{ height: "50%" }}>
-                New Orders
+                <DashCard
+                  width="100%"
+                  color="#8f6aec"
+                  icon={<MdBookmarkBorder />}
+                  title="Total Orders"
+                  number={lineData?.totalOrders}
+                  link="/orders"
+                  percentage={10}
+                  chartData={lineData?.data}
+                  dataKey="Total orders"
+                />
               </div>
             </div>
             <div className="col-xl-6 py-2">
-              <div className="dashboard-box" style={{ height: "50%" }}>
-                Add Employees
+              <div className="dashboard-box mb-2" style={{ height: "50%" }}>
+                <DashCard
+                  width="100%"
+                  color="#4ef3d8"
+                  icon={<FaPeopleGroup />}
+                  title="Total Customers"
+                  number={lineData?.totalCustomers}
+                  link="/customers"
+                  percentage={10}
+                  chartData={lineData?.data}
+                  dataKey="Total customers"
+                />
               </div>
               <div className="dashboard-box" style={{ height: "50%" }}>
-                Employees
+                <DashCard
+                  width="100%"
+                  color="#f418c5"
+                  icon={<FaPeopleCarryBox />}
+                  title="Total Employees"
+                  number={lineData?.totalEmployees}
+                  link="/employees"
+                  percentage={10}
+                  chartData={lineData?.data}
+                  dataKey="Total employees"
+                />
               </div>
             </div>
           </div>
@@ -109,7 +175,7 @@ function Dashboard() {
         <div className="col-xl-4 mt-4 mb-2">
           <div
             className="h-200 bg-white py-3 dash_card"
-            style={{ width: "98%", margin: "auto", height: "90%" }}
+            style={{ width: "98%", margin: "auto", height: "100%" }}
           >
             <PieChartComponent data={pieData} />
           </div>
@@ -118,7 +184,7 @@ function Dashboard() {
         <div className="col-xl-7 my-2">
           <div
             className="bg-white py-5 dash_card"
-            style={{ width: "95%", margin: "auto", height: "95%" }}
+            style={{ width: "96%", margin: "auto", height: "100%" }}
           >
             <BarChartComponent
               data={barData}
@@ -134,9 +200,10 @@ function Dashboard() {
           <div
             className="bg-white py-2 dash_card"
             style={{
-              width: "95%",
+              width: "96%",
               margin: "auto",
-              height: "95%",
+              // height: "95%",
+              height: "100%",
               minHeight: "400px",
             }}
           >
@@ -153,7 +220,7 @@ function Dashboard() {
         <div className="col-12 my-2">
           <div
             className="bg-white py-5 dash_card"
-            style={{ width: "95%", margin: "auto", height: "95%" }}
+            style={{ width: "98%", margin: "auto", height: "95%" }}
           >
             <AreaChartComponent
               areaData={areaData}

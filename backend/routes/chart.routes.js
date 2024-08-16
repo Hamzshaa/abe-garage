@@ -9,12 +9,6 @@ router.get(
   chartController.barChart
 );
 
-// router.get(
-//   "/api/charts/customer/line",
-//   [authMiddleware.verifyToken, authMiddleware.isAdmin],
-//   chartController.customerLineChart
-// );
-
 router.get(
   "/api/charts/customer/area",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
@@ -31,6 +25,12 @@ router.get(
   "/api/charts/order/pie",
   [authMiddleware.verifyToken, authMiddleware.isAdmin],
   chartController.orderPieChart
+);
+
+router.get(
+  "/api/charts/line",
+  [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  chartController.customerLineChart
 );
 
 module.exports = router;

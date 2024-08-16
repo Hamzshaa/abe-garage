@@ -72,42 +72,6 @@ async function getBarChartData() {
   return data;
 }
 
-// async function getCustomerLineChartData() {
-//   const currentDate = new Date(
-//     new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-//   );
-
-//   const startDateBefore30Days = new Date(currentDate);
-//   startDateBefore30Days.setDate(startDateBefore30Days.getDate() - 30);
-
-//   const query = `
-//             SELECT DATE_FORMAT(customer_added_date, '%Y-%m-%d') AS date,
-//                  COUNT(customer_id) AS count
-//             FROM customer_identifier
-//             WHERE DATE(customer_added_date) BETWEEN ? AND ?
-//             GROUP BY DATE(customer_added_date)
-//         `;
-
-//   const rows = await db.query(query, [startDateBefore30Days, currentDate]);
-
-//   let data = [];
-
-//   let startingDate = new Date(startDateBefore30Days);
-
-//   while (startingDate <= currentDate) {
-//     const date = new Date(startingDate);
-//     const dateStr = date.toISOString().split("T")[0];
-//     const count = rows.find((row) => row.date === dateStr)?.count || 0;
-//     data.push({
-//       date: date.toLocaleDateString("en-US", { month: "long", day: "numeric" }),
-//       count,
-//     });
-//     startingDate.setDate(startingDate.getDate() + 1);
-//   }
-
-//   return data;
-// }
-
 async function getCustomerAreaChartData() {
   const result = [];
 
@@ -161,18 +125,6 @@ async function getCustomerAreaChartData() {
 }
 
 async function getOrderRadarChartData() {
-  // const query = `
-  //     SELECT service_name,
-  //           COUNT(order_id) AS total_orders
-  //     FROM order_services
-  //     INNER JOIN common_services
-  //     ON order_services.service_id = common_services.service_id
-  //     GROUP BY service_name;
-  // `;
-
-  // also add the completed and inprogress orders separately. so the output format will be like this: {service_name: "service_name", total_orders: 10, completed_orders: 5, inprogress_orders: 5}. if the service_completed is 1, then it is completed, if it is 0, then it is inprogress.
-  // I want you not to sum service_completed, but to count the number of completed orders and inprogress orders. so the query will be like this: if service_completed is 1, then count for completed orders, if it is not 1, then count for inprogress orders. don't use sum, use count instead
-
   const query = `
       SELECT service_name,  
             COUNT(order_id) AS total_orders,
@@ -239,8 +191,84 @@ async function getOrderPieChartData() {
   return data;
 }
 
+async function getCustomerLineChartData() {
+  // get the customer count for the last 28 days in a 4 day gap, so 7 data points. and also the total customer count, in the form of an array of objects like this: {"total customers": 100, data: [{date: "2021-09-01", count: 10}, {date: "2021-09-05", count: 20}, {date: "2021-09-09", count: 30}, {date: "2021-09-13", count: 40}, {date: "2021-09-17", count: 50}, {date: "2021-09-21", count: 60}, {date: "2021-09-25", count: 70}]}
+
+  const currentDate = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+  );
+
+  const result = [];
+  let totalCustomers = 0;
+  let totalVehicles = 0;
+  let totalOrders = 0;
+  let totalEmployees = 0;
+
+  const startDateBefore30Days = new Date(currentDate);
+  startDateBefore30Days.setDate(startDateBefore30Days.getDate() - 30);
+
+  for (let i = 28; i >= 0; i -= 4) {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - i);
+
+    const formattedDate = currentDate.toISOString().split("T")[0];
+
+    const customerQuery = `
+        SELECT COUNT(customer_id) AS totalCustomers
+        FROM customer_identifier
+        WHERE DATE(customer_added_date) <= ?;
+      `;
+
+    const params = [formattedDate];
+    let customers = await db.query(customerQuery, params);
+
+    const vehicleQuery = `
+        SELECT COUNT(vehicle_id) AS totalVehicles
+        FROM customer_vehicle_info
+        WHERE DATE(vehicle_added_date) <= ?;
+        `;
+    let vehicles = await db.query(vehicleQuery, params);
+
+    const orderQuery = `
+        SELECT COUNT(order_id) AS totalOrders
+        FROM orders
+        WHERE DATE(order_date) <= ?;
+      `;
+
+    let orders = await db.query(orderQuery, params);
+
+    const employeeQuery = `
+        SELECT COUNT(employee_id) AS totalEmployees
+        FROM employee
+        WHERE DATE(added_date) <= ?;
+
+      `;
+
+    let employees = await db.query(employeeQuery, params);
+
+    result.push({
+      date: currentDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+      }),
+      "Total customers": parseInt(customers[0].totalCustomers),
+      "Total vehicles": parseInt(vehicles[0].totalVehicles),
+      "Total orders": parseInt(orders[0].totalOrders),
+      "Total employees": parseInt(employees[0].totalEmployees),
+    });
+  }
+
+  return {
+    totalCustomers: result[7]["Total customers"],
+    totalVehicles: result[7]["Total vehicles"],
+    totalOrders: result[7]["Total orders"],
+    totalEmployees: result[7]["Total employees"],
+    data: result,
+  };
+}
+
 module.exports = {
-  // getCustomerLineChartData,
+  getCustomerLineChartData,
   getBarChartData,
   getCustomerAreaChartData,
   getOrderRadarChartData,

@@ -16,22 +16,6 @@ async function barChart(req, res, next) {
   }
 }
 
-// async function customerLineChart(req, res, next) {
-//   const data = await chartService.getCustomerLineChartData();
-
-//   try {
-//     return res.status(200).json({
-//       status: "success",
-//       data: data,
-//     });
-//   } catch (error) {
-//     console.error("Error in customerLineChart controller:", error);
-//     return res.status(500).json({
-//       error: "Something went wrong!",
-//     });
-//   }
-// }
-
 async function customerAreaChart(req, res, next) {
   const data = await chartService.getCustomerAreaChartData();
 
@@ -80,8 +64,24 @@ async function orderPieChart(req, res, next) {
   }
 }
 
+async function customerLineChart(req, res, next) {
+  const data = await chartService.getCustomerLineChartData();
+
+  try {
+    return res.status(200).json({
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error in customerLineChart controller:", error);
+    return res.status(500).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+
 module.exports = {
-  // customerLineChart,
+  customerLineChart,
   barChart,
   customerAreaChart,
   orderRadarChart,
