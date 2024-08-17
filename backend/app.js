@@ -7,8 +7,6 @@ const corsOptions = {
   origin: process.env.FRONTEND_URL,
   optionsSuccessStatus: 200,
 };
-console.log("PORT:", process.env.PORT);
-// console.log("DB_PASS:", process.env.DB_PASS);
 
 
 const router = require("./routes");
@@ -21,7 +19,7 @@ app.use(sanitize.middleware);
 
 app.use(router);
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}`);

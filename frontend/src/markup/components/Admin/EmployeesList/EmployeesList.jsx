@@ -1,116 +1,160 @@
-// Import the necessary components
-import React, { useState, useEffect } from "react";
-import { Table, Button } from "react-bootstrap";
-// Import the auth hook
+import { useState, useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../../Contexts/AuthContext";
-// Import the date-fns library
-import { format } from "date-fns"; // To properly format the date on the table
-// Import the getAllEmployees function
+import { format } from "date-fns";
 import employeeService from "../../../../services/employee.service";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { TextField } from "@mui/material";
 
-// Create the EmployeesList component
 const EmployeesList = () => {
-	// Create all the states we need to store the data
-	// Create the employees state to store the employees data
-	const [employees, setEmployees] = useState([]);
-	// A state to serve as a flag to show the error message
-	const [apiError, setApiError] = useState(false);
-	// A state to store the error message
-	const [apiErrorMessage, setApiErrorMessage] = useState(null);
-	// To get the logged in employee token
-	const { employee } = useAuth();
-	let token = null; // To store the token
-	if (employee) {
-		token = employee.employee_token;
-	} 
+  const [employees, setEmployees] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [apiError, setApiError] = useState(false);
+  const [apiErrorMessage, setApiErrorMessage] = useState(null);
+  const [token, setToken] = useState(null);
 
-	useEffect(() => {
-		// Call the getAllEmployees function
-		const allEmployees = employeeService.getAllEmployees(token);
-		allEmployees
-			.then((res) => {
-				if (!res.ok) {
-					console.log(res.status);
-					setApiError(true);
-					if (res.status === 401) {
-						setApiErrorMessage("Please login again");
-					} else if (res.status === 403) {
-						setApiErrorMessage("You are not authorized to view this page");
-					} else {
-						setApiErrorMessage("Please try again later");
-					}
-				}
-				return res.json();
-			})
-			.then((data) => {
-				if (data.data.length !== 0) {
-					setEmployees(data.data);
-				}
-			})
-			.catch((err) => {
-				// console.log(err);
-			});
-	}, []);
+  const { employee } = useAuth();
 
-	return (
-		<>
-			{apiError ? (
-				<section className="contact-section">
-					<div className="auto-container">
-						<div className="contact-title">
-							<h2>{apiErrorMessage}</h2>
-						</div>
-					</div>
-				</section>
-			) : (
-				<>
-					<section className="contact-section">
-						<div className="auto-container">
-							<div className="contact-title">
-								<h2>Employees</h2>
-							</div>
-							<Table striped bordered hover>
-								<thead>
-									<tr>
-										<th>Active</th>
-										<th>First Name</th>
-										<th>Last Name</th>
-										<th>Email</th>
-										<th>Phone</th>
-										<th>Added Date</th>
-										<th>Role</th>
-										<th>Edit/Delete</th>
-									</tr>
-								</thead>
-								<tbody>
-									{employees.map((employee) => (
-										<tr key={employee.employee_id}>
-											<td>{employee.active_employee ? "Yes" : "No"}</td>
-											<td>{employee.employee_first_name}</td>
-											<td>{employee.employee_last_name}</td>
-											<td>{employee.employee_email}</td>
-											<td>{employee.employee_phone}</td>
-											<td>
-												{format(
-													new Date(employee.added_date),
-													"MM -  dd - yyyy | kk:mm"
-												)}
-											</td>
-											<td>{employee.company_role_name}</td>
-											<td>
-												<div className="edit-delete-icons">edit | delete</div>
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</Table>
-						</div>
-					</section>
-				</>
-			)}
-		</>
-	);
+  useEffect(() => {
+    if (!token) {
+      setToken(employee?.employee_token);
+    }
+  }, [employee, token]);
+
+  useEffect(() => {
+    if (!token) return;
+    const allEmployees = employeeService.getAllEmployees(token) || [];
+    allEmployees
+      .then((res) => {
+        if (!res.ok) {
+          setApiError(true);
+          if (res.status === 401) {
+            setApiErrorMessage("Please login again");
+          } else if (res.status === 403) {
+            setApiErrorMessage("You are not authorized to view this page");
+          } else {
+            setApiErrorMessage("Please try again later");
+          }
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.status == "success" && data?.data?.length !== 0) {
+          console.log(data);
+          setEmployees(data?.data);
+          setFilteredEmployees(data?.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [token]);
+
+  useEffect(() => {
+    setFilteredEmployees(
+      employees?.filter((employee) =>
+        `${employee?.employee_first_name} ${employee?.employee_last_name} ${employee?.employee_email} ${employee?.employee_phone}`
+          ?.toLowerCase()
+          ?.includes(searchText.toLowerCase())
+      )
+    );
+  }, [searchText, employees, token]);
+
+  const columns = [
+    {
+      field: "active_employee",
+      headerName: "Active",
+      width: 75,
+      renderCell: (params) => (params.value ? "Yes" : "No"),
+    },
+    { field: "employee_first_name", headerName: "First Name", width: 125 },
+    { field: "employee_last_name", headerName: "Last Name", width: 125 },
+    { field: "employee_email", headerName: "Email", width: 175 },
+    { field: "employee_phone", headerName: "Phone", width: 125 },
+    {
+      field: "added_date",
+      headerName: "Added Date",
+      width: 200,
+      renderCell: (params) =>
+        format(new Date(params.value), "MM-dd-yyyy | kk:mm"),
+    },
+    { field: "company_role_name", headerName: "Role", width: 125 },
+    {
+      field: "actions",
+      headerName: "Edit/Delete",
+      width: 150,
+      renderCell: (params) => {
+        console.log(params.id); // This should now log the correct employee_id.
+        return (
+          <div className="edit-delete-icons">
+            <Link to={`/admin/employee/edit/${params.id}`}>
+              <FaEdit />
+            </Link>
+            &nbsp;|&nbsp;
+            <MdDelete size={20} />
+          </div>
+        );
+      },
+    },
+  ];
+
+  const rows = filteredEmployees?.map((employee) => ({
+    id: employee.employee_id,
+    active_employee: employee.active_employee,
+    employee_first_name: employee.employee_first_name,
+    employee_last_name: employee.employee_last_name,
+    employee_email: employee.employee_email,
+    employee_phone: employee.employee_phone,
+    added_date: employee.added_date,
+    company_role_name: employee.company_role_name,
+  }));
+
+  return (
+    <>
+      {apiError ? (
+        <section className="contact-section">
+          <div className="auto-container">
+            <div className="contact-title">
+              <h2>{apiErrorMessage}</h2>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="contact-section">
+          <div className="auto-container">
+            <div className="contact-title">
+              <h2>Employees</h2>
+            </div>
+            <TextField
+              label="Search Employees"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+            <div style={{ height: 400, width: "100%" }}>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSizeOptions={[5, 10, 20]}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                // checkboxSelection
+                disableRowSelectionOnClick
+              />
+            </div>
+          </div>
+        </section>
+      )}
+    </>
+  );
 };
 
-// Export the EmployeesList component
 export default EmployeesList;

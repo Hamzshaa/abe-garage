@@ -17,7 +17,7 @@ function HomeService({ vban2, vban1, fuelImage, about, features }) {
 									<img src={vban1} />
 									<img src={vban2} />
 									<div className="year-experience" data-parallax='{"y": 30}'>
-										<strong>17</strong> years <br />
+										<strong>24</strong> years <br />
 										Experience{" "}
 									</div>
 								</div>

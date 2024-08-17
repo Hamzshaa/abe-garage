@@ -1,9 +1,6 @@
-import propTypes from "prop-types";
-
-// eslint-disable-next-line
-function AdminMenu(props) {
+function AdminMenu() {
   return (
-    <div>
+    <div className="admin-side-bar-height">
       <div className="admin-menu">
         <h2>Admin Menu</h2>
       </div>
@@ -38,7 +35,3 @@ function AdminMenu(props) {
 }
 
 export default AdminMenu;
-
-AdminMenu.propTypes = {
-  props: propTypes.object, 
-};
