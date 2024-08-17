@@ -1,7 +1,6 @@
 function AdminMenu() {
-
   return (
-    <div>
+    <div className="admin-side-bar-height">
       <div className="admin-menu">
         <h2>Admin Menu</h2>
       </div>
