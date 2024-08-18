@@ -13,8 +13,12 @@ function Dashboard() {
             className="col-md-9 admin-right-side"
             style={{ backgroundColor: "#dae3f0" }}
           >
-          <div className="col-md-9 admin-right-side">
-            <AdminDashboard />
+            <div
+              className="col-md-12 admin-right-side"
+              style={{ marginInline: "auto" }}
+            >
+              <AdminDashboard />
+            </div>
           </div>
         </div>
       </div>

@@ -99,8 +99,8 @@ function Dashboard() {
   }, [token, api_url]);
 
   return (
-    <div>
-      <div className="row">
+    <div className="admin-right-side-scroller">
+      <div className="row" style={{ width: "100%" }}>
         {/* Row 1 */}
         <div
           className="row col-xl-8 col-12 mt-4 mb-2 "
@@ -123,7 +123,7 @@ function Dashboard() {
                   title="Total Vehicles"
                   number={lineData?.totalVehicles}
                   link="/vehicles"
-                  percentage={10}
+                  percentage={lineData?.vehiclePercent}
                   chartData={lineData?.data}
                   dataKey="Total vehicles"
                 />
@@ -136,7 +136,7 @@ function Dashboard() {
                   title="Total Orders"
                   number={lineData?.totalOrders}
                   link="/orders"
-                  percentage={10}
+                  percentage={lineData?.orderPercent}
                   chartData={lineData?.data}
                   dataKey="Total orders"
                 />
@@ -151,7 +151,7 @@ function Dashboard() {
                   title="Total Customers"
                   number={lineData?.totalCustomers}
                   link="/customers"
-                  percentage={10}
+                  percentage={lineData?.customerPercent}
                   chartData={lineData?.data}
                   dataKey="Total customers"
                 />
@@ -164,7 +164,7 @@ function Dashboard() {
                   title="Total Employees"
                   number={lineData?.totalEmployees}
                   link="/employees"
-                  percentage={10}
+                  percentage={lineData?.employeePercent}
                   chartData={lineData?.data}
                   dataKey="Total employees"
                 />

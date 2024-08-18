@@ -258,11 +258,34 @@ async function getCustomerLineChartData() {
     });
   }
 
+  function getPercentChange(oldNumber, newNumber) {
+    if (oldNumber === 0) return 100 * newNumber;
+    var decreaseValue = oldNumber - newNumber;
+
+    return (decreaseValue / oldNumber) * 100;
+  }
+
   return {
     totalCustomers: result[7]["Total customers"],
+    customerPercent: getPercentChange(
+      parseInt(result[0]["Total customers"]),
+      parseInt(result[7]["Total customers"])
+    ),
     totalVehicles: result[7]["Total vehicles"],
+    vehiclePercent: getPercentChange(
+      parseInt(result[0]["Total vehicles"]),
+      parseInt(result[7]["Total vehicles"])
+    ),
     totalOrders: result[7]["Total orders"],
+    orderPercent: getPercentChange(
+      parseInt(result[0]["Total orders"]),
+      parseInt(result[7]["Total orders"])
+    ),
     totalEmployees: result[7]["Total employees"],
+    employeePercent: getPercentChange(
+      parseInt(result[0]["Total employees"]),
+      parseInt(result[7]["Total employees"])
+    ),
     data: result,
   };
 }

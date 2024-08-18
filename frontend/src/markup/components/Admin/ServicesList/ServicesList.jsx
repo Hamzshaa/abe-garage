@@ -26,9 +26,10 @@ const ServicesList = () => {
   const [Service, setService] = useState([]);
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState(""); // eslint-disable-line
   const [deleteId, setDeleteId] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false); // eslint-disable-line
+  // const [token, setToken] = useState(null);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = (service) => {
@@ -41,10 +42,18 @@ const ServicesList = () => {
 
   const navigate = useNavigate();
   const { employee } = useAuth();
-  let token = employee?.employee_token;
+
+  console.log(employee);
+  let token = null;
+  if (!token) {
+    // setToken(employee?.employee_token);
+    token = employee?.employee_token;
+  }
+
   const fetchServices = async () => {
     try {
       const res = await ServiceService.getAllServices(token);
+      console.log(res);
       if (!res.ok) {
         setApiError(true);
         switch (res.status) {
@@ -68,6 +77,7 @@ const ServicesList = () => {
     }
   };
   useEffect(() => {
+    if (!token) return;
     fetchServices();
   }, [token]);
 

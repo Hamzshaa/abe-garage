@@ -17,6 +17,7 @@ function Header() {
   const logOut = () => {
     // Call the logout function from the login service
     loginService.logOut();
+    window.location("/");
     // Set the isLogged state to false
     setIsLogged(false);
   };
@@ -37,7 +38,9 @@ function Header() {
                 {isLogged ? (
                   <div className="link-btn">
                     <div className="phone-number">
-                      <strong>Welcome {employee?.employee_first_name}</strong>
+                      <strong style={{ color: "white" }}>
+                        Welcome {employee?.employee_first_name}
+                      </strong>
                     </div>
                   </div>
                 ) : (
