@@ -72,9 +72,9 @@ function CustomerDetail() {
 		return <p>Loading customer details...</p>;
 	}
 
-	if (error) {
-		return <p>Error: {error}</p>;
-	}
+	// if (error) {
+	// 	return <p>Error: {error}</p>;
+	// }
 
 	if (!customer) {
 		return <p>No customer data found.</p>;
