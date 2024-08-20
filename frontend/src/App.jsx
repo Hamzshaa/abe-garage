@@ -27,6 +27,7 @@ import AddCustomer from "./markup/pages/Admin/AddCustomer";
 import EditCustomer from "./markup/pages/Admin/EditCustomer";
 import UpdateEmployees from "./markup/pages/Admin/UpdateEmployees";
 import Contact from "./markup/pages/Contact.jsx";
+import CustomerProfile from "./markup/pages/Admin/CustomerProfile.jsx";
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
         />
         <Route path="/admin/employees" element={<Employees />} />
         <Route
+          path="/admin/employee/edit/:id"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <UpdateEmployees />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
           path="/admin/add-customer"
           element={
             <PrivateAuthRoute roles={[3]}>
@@ -63,6 +72,14 @@ function App() {
           element={
             <PrivateAuthRoute roles={[3]}>
               <Customers />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/customer/:customerId"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <CustomerProfile />
             </PrivateAuthRoute>
           }
         />
