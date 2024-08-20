@@ -17,6 +17,7 @@ function Header() {
   const logOut = () => {
     // Call the logout function from the login service
     loginService.logOut();
+    window.location("/");
     // Set the isLogged state to false
     setIsLogged(false);
   };
@@ -37,7 +38,9 @@ function Header() {
                 {isLogged ? (
                   <div className="link-btn">
                     <div className="phone-number">
-                      <strong>Welcome {employee?.employee_first_name}</strong>
+                      <strong style={{ color: "white", paddingRight: "32px" }}>
+                        Welcome {employee?.employee_first_name}
+                      </strong>
                     </div>
                   </div>
                 ) : (
@@ -54,9 +57,9 @@ function Header() {
             <div className="inner-container">
               <div className="logo-box">
                 <div className="logo">
-                  <a href="/">
+                  <Link to="/">
                     <img src={logo} alt="" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="right-column">
@@ -71,20 +74,20 @@ function Header() {
                     >
                       <ul className="navigation">
                         <li className="dropdown">
-                          <a href="/">Home</a>
+                          <Link to="/">Home</Link>
                         </li>
                         <li className="dropdown">
-                          <a href="/about">About Us</a>
+                          <Link to="/about">About Us</Link>
                         </li>
                         <li className="dropdown">
-                          <a href="/services">Services</a>
+                          <Link to="/services">Services</Link>
                         </li>
                         <li>
-                          <a href="/contact">Contact Us</a>
+                          <Link to="/contact">Contact Us</Link>
                         </li>
                         {isAdmin && (
                           <li>
-                            <a href="/admin">Admin</a>
+                            <Link to="/admin">Admin</Link>
                           </li>
                         )}
                       </ul>
@@ -119,9 +122,9 @@ function Header() {
               <div className="inner-container">
                 <div className="logo-box">
                   <div className="logo">
-                    <a href="/">
+                    <Link to="/">
                       <img src="assets/images/custom/logo.png" alt="" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="right-column">
@@ -134,9 +137,9 @@ function Header() {
                   </div>
                   <div className="search-btn"></div>
                   <div className="link-btn">
-                    <a href="/login" className="theme-btn btn-style-one">
+                    <Link to="/login" className="theme-btn btn-style-one">
                       Login
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -151,9 +154,9 @@ function Header() {
 
           <nav className="menu-box">
             <div className="nav-logo">
-              <a href="index.html">
+              <Link to="index.html">
                 <img src="assets/images/logo-two.png" alt="" title="" />
-              </a>
+              </Link>
             </div>
             <div className="menu-outer"></div>
           </nav>

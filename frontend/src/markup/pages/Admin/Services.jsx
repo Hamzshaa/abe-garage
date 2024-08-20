@@ -1,6 +1,6 @@
 import { useAuth } from "../../../Contexts/AuthContext";
 import LoginForm from "../../components/LoginForm/LoginForm";
-import AdminMenu from "../../components/Admin/EmployeesList/AdminMenu/AdminMenu";
+import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
 import ServicesList from "../../components/Admin/ServicesList/ServicesList";
 function Services() {
   const { isLogged, isAdmin } = useAuth();

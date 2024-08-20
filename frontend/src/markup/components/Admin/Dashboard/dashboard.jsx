@@ -122,7 +122,7 @@ function Dashboard() {
                   icon={<IoCarSport />}
                   title="Total Vehicles"
                   number={lineData?.totalVehicles}
-                  link="/vehicles"
+                  // link="/vehicles"
                   percentage={lineData?.vehiclePercent}
                   chartData={lineData?.data}
                   dataKey="Total vehicles"
@@ -135,7 +135,7 @@ function Dashboard() {
                   icon={<MdBookmarkBorder />}
                   title="Total Orders"
                   number={lineData?.totalOrders}
-                  link="/orders"
+                  link="/admin/orders"
                   percentage={lineData?.orderPercent}
                   chartData={lineData?.data}
                   dataKey="Total orders"
@@ -150,7 +150,7 @@ function Dashboard() {
                   icon={<FaPeopleGroup />}
                   title="Total Customers"
                   number={lineData?.totalCustomers}
-                  link="/customers"
+                  link="/admin/customers"
                   percentage={lineData?.customerPercent}
                   chartData={lineData?.data}
                   dataKey="Total customers"
@@ -163,7 +163,7 @@ function Dashboard() {
                   icon={<FaPeopleCarryBox />}
                   title="Total Employees"
                   number={lineData?.totalEmployees}
-                  link="/employees"
+                  link="/admin/employees"
                   percentage={lineData?.employeePercent}
                   chartData={lineData?.data}
                   dataKey="Total employees"
