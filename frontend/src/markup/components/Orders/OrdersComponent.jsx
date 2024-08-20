@@ -7,19 +7,20 @@ const OrdersComponent = () => {
   const [Orders, setOrders] = useState([]);
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
-  const [token, setToken] = useState(null);
+  //   const [token, setToken] = useState(null);
   const { employee } = useAuth();
-  //   if (employee) {
-  //     setToken(employee.employee_token.toString());
-  //   }
+
+  let token = null;
+  if (employee) {
+    token = employee.employee_token;
+  }
+
   useEffect(() => {
-    if (!token) setToken(employee?.employee_token);
+    if (!token) return;
+    fetchOrder();
   }, [token]);
-  //   let token =
-  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZV9pZCI6MywiZW1wbG95ZWVfZW1haWwiOiJsb3phYXNoZW5hZmlAZ21haWwuY29tIiwiZW1wbG95ZWVfcm9sZSI6MywiZW1wbG95ZWVfZmlyc3RfbmFtZSI6IkxvemEiLCJpYXQiOjE3MjQwOTg4NTEsImV4cCI6MTcyNDE4NTI1MX0.wHACSneEdOpbqrQRS9vjvUOHhI89g4lTu9M0koWbDOU";
 
   const fetchOrder = async () => {
-    // if (!token) return;s
     try {
       const res = await OrderService.getAllOrder(token);
       console.log(res);
@@ -44,9 +45,6 @@ const OrdersComponent = () => {
       setApiErrorMessage("An error occurred while fetching services");
     }
   };
-  useEffect(() => {
-    fetchOrder();
-  }, [token]);
 
   return (
     <div>
