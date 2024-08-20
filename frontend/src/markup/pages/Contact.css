@@ -1,0 +1,99 @@
+.Contact_us_header {
+    background-image: url(https://abe-garage.netlify.app/static/media/Contact_us_header_image.516ddd1b06f45b6f4a2e.png);
+    background-size: cover;
+    padding-bottom: 80px;
+    padding-top: 92px;
+}
+.ContactUS{
+        padding-left: 312px;
+}
+.Contact_us_title h1{
+       color: #e8e8e9;
+    font-size: 37px;
+    font-weight: bolder;
+    margin-bottom: 12px;
+}
+
+.contact-container {
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+.homeflex{
+    display: flex;    
+}
+.homeflex .whitehome{
+    color: white;
+}
+.homeflex .redhome{
+    color: red;
+}
+.arrow{
+    margin-left: 7px;
+    color: white;
+}
+
+.contact-info {
+  display: flex;
+    margin-bottom: 78px;
+    margin-left: 200px;
+    margin-top: 78px;
+}
+
+.map iframe {
+ height: 370px;
+    margin-right: 127px;
+    width: 478px;
+    
+}
+
+.address-details {
+  max-width: 400px;
+  text-align: left;
+}
+
+.address-details p {
+    color: #858484;
+    font-family: Lato, sans-serif;
+    line-height: 18px;
+
+}
+
+strong {
+  color: #05185B;
+}
+strong img{
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+
+}
+.Our_Address strong{
+    font-size: 30px !important;
+}
+.appointment-text {
+  text-align: left;
+}
+
+.appointment-contact {
+  text-align: right;
+}
+
+.appointment-contact p {
+  margin: 0;
+  font-size: 24px;
+}
+
+.contact-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: white;
+  color: red;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-button:hover {
+  background-color: #f0f0f0;
+}

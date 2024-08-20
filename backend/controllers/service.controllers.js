@@ -18,14 +18,17 @@ async function getAllServices(req, res, next) {
 }
 async function updateService(req, res, next) {
   try {
+    // const service_id = req.params.id; // Get service_id from URL parameters
     const { service_id, service_name, service_description } = req.body;
-
+    // console.log(service_id);
+    // Validate input
     if (!service_id || !service_name || !service_description) {
       return res.status(400).json({
         error: "Service ID, name, and description are required!",
       });
     }
 
+    // Call the updateService method from the service service
     const success = await serviceService.updateService(
       service_id,
       service_name,
@@ -33,29 +36,32 @@ async function updateService(req, res, next) {
     );
 
     if (success) {
-      res
-        .status(200)
-        .json({ success: true, message: "Service updated successfully" });
+      res.status(200).json({
+        success: true,
+        message: "Service updated successfully",
+      });
     } else {
       res.status(404).json({ message: "Service not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating service:", error.message); // Logging the error
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the service" });
   }
 }
 
 async function deactivateService(req, res, next) {
   try {
-    const { service_id } = req.body;
-
+    const service_id = req.params.id;
+    console.log(service_id);
     if (!service_id) {
       return res.status(400).json({
         error: "Service ID is required!",
       });
     }
-
     const success = await serviceService.deactivateService(service_id);
-
+    // console.log(success);
     if (success) {
       res
         .status(200)

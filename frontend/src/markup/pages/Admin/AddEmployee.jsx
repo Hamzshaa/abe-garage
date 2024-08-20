@@ -1,5 +1,5 @@
 import AddEmployeeForm from "../../components/Admin/AddEmployeeForm/AddEmployeeForm";
-import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
+import AdminMenu from "../../components/Admin/EmployeesList/AdminMenu/AdminMenu";
 
 function AddEmployee() {
   return (

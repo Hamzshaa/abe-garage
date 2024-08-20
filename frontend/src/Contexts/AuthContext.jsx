@@ -7,13 +7,21 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-// eslint-disable-next-line
 export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isManager, setIsManager] = useState(false);
   const [employee, setEmployee] = useState(null);
 
-  const value = { isLogged, isAdmin, setIsAdmin, setIsLogged, employee };
+  const value = {
+    isLogged,
+    isAdmin,
+    setIsAdmin,
+    isManager,
+    setIsManager,
+    setIsLogged,
+    employee,
+  };
 
   useEffect(() => {
     const loggedInEmployee = getAuth();
