@@ -44,12 +44,11 @@ async function logIn(req, res, next) {
     res.status(500).json({
       status: "fail",
       message: "Internal Server Error",
-    })
+    });
   }
-
 }
 
 // Export the functions
 module.exports = {
-	logIn,
+  logIn,
 };

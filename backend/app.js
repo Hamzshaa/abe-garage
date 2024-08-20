@@ -8,7 +8,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-
 const router = require("./routes");
 
 const app = express();

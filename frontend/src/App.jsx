@@ -18,7 +18,7 @@ import Service from "./markup/pages/Admin/Services";
 import Services from "./markup/pages/Services";
 import About from "./markup/pages/About.jsx";
 import Orders from "./markup/pages/Orders/Orders";
-import AddOrders from "./markup/pages/Orders/AddOrders"
+import AddOrders from "./markup/pages/Orders/AddOrders";
 import EditService from "./markup/components/Admin/EditService/EditService";
 import Dashboard from "./markup/pages/Admin/dashboard";
 
@@ -27,7 +27,6 @@ import AddCustomer from "./markup/pages/Admin/AddCustomer";
 import EditCustomer from "./markup/pages/Admin/EditCustomer";
 import UpdateEmployees from "./markup/pages/Admin/UpdateEmployees";
 import Contact from "./markup/pages/Contact.jsx";
-
 
 function App() {
   return (
@@ -99,7 +98,7 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-				<Route path="/admin/order" element={<AddOrders />} />
+        <Route path="/admin/order" element={<AddOrders />} />
         <Route
           path="/admin/services"
           element={

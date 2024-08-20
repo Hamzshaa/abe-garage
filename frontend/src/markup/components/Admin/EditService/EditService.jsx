@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ServiceService from "../../../../services/service.service";
-import AdminMenu from "../EmployeesList/AdminMenu/AdminMenu";
+import AdminMenu from "../AdminMenu/AdminMenu";
 import { useAuth } from "../../../../Contexts/AuthContext";
 
 const EditService = () => {

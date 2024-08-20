@@ -1,5 +1,6 @@
 // import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { Line, LineChart, Tooltip } from "recharts";
 
 export default function DashCard({
@@ -62,11 +63,15 @@ export default function DashCard({
           </span>
         </div>
         <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{number}</div>
-        <div style={{ color: color }}>
-          <a href={link} style={{ fontSize: "0.8rem" }}>
-            View all
-          </a>
-        </div>
+        {link ? (
+          <div style={{ color: color }}>
+            <Link to={link} style={{ fontSize: "0.8rem" }}>
+              View all
+            </Link>
+          </div>
+        ) : (
+          <div style={{ height: "1.8rem" }}></div>
+        )}
       </div>
       <div
         style={{
@@ -148,4 +153,6 @@ DashCard.propTypes = {
   number: propTypes.number,
   link: propTypes.string,
   percentage: propTypes.number,
+  chartData: propTypes.array,
+  dataKey: propTypes.string,
 };
