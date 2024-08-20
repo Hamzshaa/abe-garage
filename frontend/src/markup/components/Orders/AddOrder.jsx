@@ -7,6 +7,10 @@ import { MdDelete } from "react-icons/md";
 import { FaHandPointer } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { DataGrid } from "@mui/x-data-grid";
+import { TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import classes from "./css/Orders.module.css";
 const api_url = import.meta.env.VITE_REACT_APP_API_URL;
 
 function AddOrder() {
@@ -21,25 +25,26 @@ function AddOrder() {
 	const [step, setStep] = useState(0);
 	const [services, setServices] = useState([]);
 	const [customerSelected, setCustomerSelected] = useState({});
+	// console.log(customerSelected);
 	const [vehicleSelected, setVehicleSelected] = useState({});
 	const [orderServices, setOrderServices] = useState([]);
+	const [filteredCustomers, setFilteredCustomers] = useState([]);
+
 	const [price, setPrice] = useState("");
 	const [serviceDescription, setServiceDescription] = useState("");
 	const { employee } = useAuth();
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	let token = null;
-	let employee_id = employee?.employee_id
-	let customer_id = customerSelected?.customer_id
+	let employee_id = employee?.employee_id;
+	let customer_id = customerSelected?.customer_id;
 	let vehicle_id = vehicleSelected?.vehicle_id;
 	if (!token) {
 		token = employee?.employee_token;
 		// const token = localStorage.getItem("token");
-		console.log(employee?.employee_token);
-		console.log("first");
-		// token =
-		// 	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZV9pZCI6MywiZW1wbG95ZWVfZW1haWwiOiJoYW16YUB0ZXN0LmNvbSIsImVtcGxveWVlX3JvbGUiOjMsImVtcGxveWVlX2ZpcnN0X25hbWUiOiJUZXN0IFVwZGF0ZWQiLCJpYXQiOjE3MjM1NTc1NTYsImV4cCI6MTcyMzY0Mzk1Nn0.yYLc2Cifkxf1mXMjMGwSWj6QrFOYwR5VFn5kUAnWRhg";
+		// console.log(employee?.employee_token);
+		// console.log("first");
 	}
-	console.log(token);
+	// console.log(token);
 
 	useEffect(() => {
 		const getCustomers = async () => {
@@ -49,7 +54,7 @@ function AddOrder() {
 				},
 			});
 			const data = await response.json();
-			console.log(data.data);
+			// console.log(data.data);
 			setCustomers(data.data);
 		};
 		getCustomers();
@@ -64,27 +69,28 @@ function AddOrder() {
 		}
 	};
 	const handleSelect = (selectedCustomer) => {
-		console.log(selectedCustomer);
+		// console.log(selectedCustomer);
 		setCustomerSelected(selectedCustomer);
-		setStep(2);
-		fetchCustomerVehicle(selectedCustomer.customer_id);
+		fetchCustomerVehicle(selectedCustomer.id);
+		setStep((prevStep) => {
+			const newStep = 2;
+			// console.log(newStep); // This will log 2
+			return newStep;
+		});
 	};
 	const fetchCustomerVehicle = async (customer_id) => {
-		const response = await fetch(
-			`http://localhost:8080/api/vehicles/${customer_id}`,
-			{
-				headers: {
-					"x-access-token": token,
-				},
-			}
-		);
+		const response = await fetch(`${api_url}/api/vehicles/${customer_id}`, {
+			headers: {
+				"x-access-token": token,
+			},
+		});
 		const data = await response.json();
-		console.log(data.vehicles);
+		// console.log(data.vehicles);
 		setVehicles(data.vehicles);
 	};
 
 	const handleSelectVehicle = (selectedVehicle) => {
-		console.log(selectedVehicle);
+		// console.log(selectedVehicle);
 		setVehicleSelected(selectedVehicle);
 		setStep(3);
 		// setVehicleSelected(selectedVehicle.customer_id);
@@ -97,7 +103,7 @@ function AddOrder() {
 			},
 		});
 		const data = await response.json();
-		console.log(data.data);
+		// console.log(data.data);
 		setServices(data.data);
 	};
 
@@ -120,13 +126,13 @@ function AddOrder() {
 			});
 		}
 	};
-	console.log(orderServices);
+	// console.log(orderServices);
 
 	const handleSubmit = async () => {
 		const data = {
 			employee_id,
-			customer_id,
-			vehicle_id,
+			customer_id: customerSelected.id,
+			vehicle_id: vehicleSelected.id,
 			// order_description: "Some description about the order",
 			// estimated_completion_date: "2023-04-28 18:27:02.380",
 			completion_date: null,
@@ -136,7 +142,7 @@ function AddOrder() {
 			additional_requests_completed: 2,
 			additional_request: serviceDescription,
 			order_status: 2,
-			order_services: orderServices
+			order_services: orderServices,
 		};
 		try {
 			const response = await fetch(`${api_url}/api/order`, {
@@ -145,249 +151,351 @@ function AddOrder() {
 					"x-access-token": token,
 					"Content-Type": "application/json",
 					// "Accept": "application/json"
-					},
-					body: JSON.stringify(data),
-					});
-					console.log(response)
-					if (response.ok) {
-						navigate("/adimin/orders")
-					} else {
-						const data1 = await response.json()
-						console.log(data1)
-						console.log(data.error)
-					}
+				},
+				body: JSON.stringify(data),
+			});
+			// console.log(response);
+			if (response.ok) {
+				navigate("/adimin/orders");
+			} else {
+				const data1 = await response.json();
+				// console.log(data1);
+				// console.log(data.error);
+			}
 		} catch (error) {
-			console.log(error)
+			// console.log(error);
 		}
-
 	};
-	// 	{
-	//     "employee_id": 1,
-	//     "customer_id": 1,
-	//     "vehicle_id": 1,
-	//     "order_description": "Some description about the order",
-	//     "estimated_completion_date": "2023-04-28 18:27:02.380",
-	//     "completion_date": null,
-	//     "order_completed": 0,
-	//     "active_order": 1,
-	//     "order_total_price": 500,
-	//     "additional_requests_completed": 500,
-	//     "order_status": 3,
-	//     "order_services": [
-	//         {
-	//             "service_id": 1,
-	//             "service_completed": 2
-	//         }
-	//     ]
-	// }
+	const handleReload = async (e) => {
+		e.preventDefault(); // Prevents the default link behavior
+		window.location.reload();
+	};
+
+	const columns1 = [
+		{
+			field: "customer_first_name",
+			headerName: "Customer First Name",
+			width: 250,
+		},
+		{
+			field: "customer_last_name",
+			headerName: "Customer Last Name",
+			width: 250,
+		},
+		{
+			field: "customer_email",
+			headerName: "Customer Email",
+			width: 250,
+		},
+		{
+			field: "customer_phone",
+			headerName: "Customer Phone Number",
+			width: 250,
+		},
+		{
+			field: "handPointer",
+			headerName: "Select",
+			width: 150,
+			renderCell: (params) => (
+				<FaHandPointer onClick={() => handleSelect(params.row)} />
+			),
+		},
+	];
+
+	const rows1 = customers
+		?.filter((customer) => {
+			return (
+				customer.customer_first_name
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase()) ||
+				customer.customer_last_name
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase()) ||
+				customer.customer_email
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase()) ||
+				customer.customer_phone_number
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())
+			);
+		})
+		?.map((customer) => ({
+			id: customer?.customer_id,
+			customer_first_name: customer?.customer_first_name,
+			customer_last_name: customer?.customer_last_name,
+			customer_email: customer?.customer_email,
+			customer_phone: customer?.customer_phone_number,
+			active_customer_status: customer?.active_customer_status,
+			// handPointer: <FaHandPointer />,
+		}));
+	// console.log(customerSelected.id);
+
+	const columns2 = [
+		{
+			field: "vehicle_year",
+			headerName: "Year",
+			width: 100,
+		},
+		{
+			field: "vehicle_make",
+			headerName: "Make",
+			width: 150,
+		},
+		{
+			field: "vehicle_model",
+			headerName: "Model",
+			width: 150,
+		},
+		{
+			field: "vehicle_tag",
+			headerName: "Tag",
+			width: 150,
+		},
+		{
+			field: "vehicle_serial",
+			headerName: "Serial",
+			width: 150,
+		},
+		{
+			field: "vehicle_color",
+			headerName: "Color",
+			width: 150,
+		},
+		{
+			field: "vehicle_mileage",
+			headerName: "Mileage",
+			width: 150,
+		},
+		{
+			field: "handPointer",
+			headerName: "Choose",
+			width: 150,
+			renderCell: (params) => (
+				<FaHandPointer onClick={() => handleSelectVehicle(params.row)} />
+			),
+		},
+	];
+	const rows2 = vehicles?.map((vehicle) => ({
+		id: vehicle?.vehicle_id,
+		vehicle_year: vehicle?.vehicle_year,
+		vehicle_make: vehicle?.vehicle_make,
+		vehicle_model: vehicle?.vehicle_model,
+		vehicle_tag: vehicle?.vehicle_tag,
+		vehicle_serial: vehicle?.vehicle_serial,
+		vehicle_color: vehicle?.vehicle_color,
+		vehicle_mileage: vehicle?.vehicle_mileage,
+	}));
+	// console.log(vehicleSelected.id);
 
 	return (
-		<div>
+		<div className={classes.component}>
 			<section className="contact-section">
 				<div className="auto-container">
 					<div className="contact-title">
 						<h2>Create a new order</h2>
-						{/* <form action="">
-							<input
-								type="text"
-								placeholder="Search for a customer using first name, last name, email address or phone nubmer"
-							/>
-						</form> */}
 						<form>
 							<div className="row clearfix">
 								{step <= 1 && (
-									<div className="form-group col-md-12">
-										<input
-											style={{
-												border: "2px solid gray",
-												width: "90%",
-												padding: "10px",
+									<TextField
+										label="Search for a customer using first name, last name, email address or phone nubmer"
+										variant="outlined"
+										fullWidth
+										margin="normal"
+										value={searchTerm}
+										onChange={handleSearch}
+									/>
+								)}
+								{step == 0 && (
+									<div className={classes.button}>
+										<button className="theme-btn btn-style-one" type="submit">
+											ADD NEW CUSTOMER
+										</button>
+									</div>
+								)}
+								{step === 1 && (
+									<div style={{ height: 400, width: "100%" }}>
+										<DataGrid
+											rows={rows1}
+											columns={columns1}
+											pageSizeOptions={[5, 10, 20]}
+											initialState={{
+												pagination: {
+													paginationModel: { page: 0, pageSize: 5 },
+												},
 											}}
-											type="text"
-											placeholder="Search for a customer using first name, last name, email address or phone nubmer"
-											onChange={handleSearch}
+											// checkboxSelection
+											// disableRowSelectionOnClick
+											onRowClick={(params) => handleSelect(params.row)} // Pass the clicked row data
 										/>
 									</div>
 								)}
-								{step == 0 && (
-									<button className="theme-btn btn-style-one" type="submit">
-										<span>ADD NEW CUSTOMER</span>
-									</button>
-								)}
-								{step == 1 && (
-									<Table striped bordered hover>
-										<tbody>
-											{customers
-												?.filter((customer) => {
-													return (
-														customer.customer_first_name
-															.toLowerCase()
-															.includes(searchTerm.toLowerCase()) ||
-														customer.customer_last_name
-															.toLowerCase()
-															.includes(searchTerm.toLowerCase()) ||
-														customer.customer_email
-															.toLowerCase()
-															.includes(searchTerm.toLowerCase()) ||
-														customer.customer_phone_number
-															.toLowerCase()
-															.includes(searchTerm.toLowerCase())
-													);
-												})
-												.map((customer) => (
-													<tr
-														key={customer?.customer_id}
-														onClick={() => handleSelect(customer)}
-													>
-														<td>{customer?.customer_first_name}</td>
-														<td>{customer?.customer_last_name}</td>
-														<td>{customer?.customer_email}</td>
-														<td>{customer?.customer_phone_number}</td>
-														<td>
-															<FaHandPointer />
-														</td>
-													</tr>
-												))}
-										</tbody>
-									</Table>
-								)}
 								{step > 1 && (
-									<div>
-										<h2>
-											{customerSelected.customer_first_name}{" "}
-											{customerSelected.customer_last_name}
-										</h2>
-										<h3>{customerSelected.customer_email}</h3>
-										<h3>{customerSelected.customer_phone_number}</h3>
-										<h3>
-											{customerSelected.active_customer_status == 1
-												? "Yes"
-												: "No"}
-										</h3>
-										<h3>
-											Edit customer info
-											<Link
-												to={`/admin/customer/edit/${customerSelected.customer_id}`}
-											>
-												<FaEdit />
-											</Link>
-										</h3>
+									<div className={classes.boxes}>
+										<div className="container">
+											<div className={`row ${classes.position}`}>
+												<div className="col-md-10">
+													<div className="col-md-10"></div>
+													<h2>
+														{customerSelected.customer_first_name}{" "}
+														{customerSelected.customer_last_name}
+													</h2>
+													<h3>Email: {customerSelected.customer_email}</h3>
+													<h3>
+														Phone Number: {customerSelected.customer_phone}
+													</h3>
+													<h3>
+														Active Customer:{" "}
+														{customerSelected.active_customer_status == 1
+															? "Yes"
+															: "No"}
+													</h3>
+													<h3>
+														Edit customer info:{" "}
+														<Link
+															to={`/admin/customer/edit/${customerSelected.customer_id}`}
+														>
+															<FaEdit />
+														</Link>
+													</h3>
+												</div>
+												<div className={`col-md-2 ${classes.absolute}`}>
+													<Link to="/admin/order" onClick={handleReload}>
+														<CloseIcon className={classes.icon} />
+													</Link>
+												</div>
+											</div>
+										</div>
 									</div>
 								)}
 								{step == 2 && (
-									<Table striped bordered hover>
-										<thead>
-											<tr>
-												<th>Year</th>
-												<th>Make</th>
-												<th>Model</th>
-												<th>Tag</th>
-												<th>Serial</th>
-												<th>Color</th>
-												<th>Mileage</th>
-												<th>Choose</th>
-											</tr>
-										</thead>
-										<tbody>
-											{vehicles.map((vehicle) => (
-												<tr
-													key={vehicle.vehicle_id}
-													onClick={() => handleSelectVehicle(vehicle)}
-												>
-													<td>{vehicle.vehicle_year}</td>
-													<td>{vehicle.vehicle_make}</td>
-													<td>{vehicle.vehicle_model}</td>
-													<td>{vehicle.vehicle_tag}</td>
-													<td>{vehicle.vehicle_serial}</td>
-													<td>{vehicle.vehicle_color}</td>
-													<td>{vehicle.vehicle_mileage}</td>
-													<td>
-														<FaHandPointer />
-													</td>
-												</tr>
-											))}
-										</tbody>
-									</Table>
-								)}
-								{step > 2 && (
-									<div>
-										<h2>
-											{vehicleSelected.vehicle_make}{" "}
-											{vehicleSelected.vehicle_model}
-										</h2>
-										<h3>{vehicleSelected.vehicle_color}</h3>
-										<h3>{vehicleSelected.vehicle_tag}</h3>
-										<h3>{vehicleSelected.vehicle_year}</h3>
-										<h3>{vehicleSelected.vehicle_mileage}</h3>
-										<h3>{vehicleSelected.vehicle_serial}</h3>
-										<h3>
-											Edit vehicle info
-											<Link
-												to={`/admin/vehicle/edit/${vehicleSelected.vehicle_id}`}
-											>
-												<FaEdit />
-											</Link>
-										</h3>
-									</div>
-								)}
-								{step > 2 && (
-									<div>
-										<h2>Choose service</h2>
-										{services.map((service) => (
-											<div>
-												<div
-													key={service.service_id}
-													onClick={() => handleSelectService(service)}
-												>
-													<h4>{service.service_name}</h4>
-													<small>{service.service_description}</small>
+									<>
+										<div className="form-group col-md-12">
+											<section className="contact-section">
+												<div className="auto-container">
+													<div style={{ height: 400, width: "100%" }}>
+														<DataGrid
+															rows={rows2}
+															columns={columns2}
+															pageSizeOptions={[5, 10, 20]}
+															initialState={{
+																pagination: {
+																	paginationModel: { page: 0, pageSize: 5 },
+																},
+															}}
+															// checkboxSelection
+															// disableRowSelectionOnClick
+															onRowClick={(params) =>
+																handleSelectVehicle(params.row)
+															} // Pass the clicked row data
+														/>
+													</div>
 												</div>
-												<div>
-													<input
-														type="checkbox"
-														onChange={(e) =>
-															handleCheckBox(service.service_id, e)
-														}
-													/>
+											</section>
+										</div>
+									</>
+								)}
+								{step > 2 && (
+									<div className={classes.boxes}>
+										<div className="container">
+											<div className={`row ${classes.position}`}>
+												<div className="col-md-10">
+													<h2>
+														{vehicleSelected.vehicle_make}{" "}
+														{vehicleSelected.vehicle_model}
+													</h2>
+													<h3>
+														Vehicle Color: {vehicleSelected.vehicle_color}
+													</h3>
+													<h3>Vehicle Tag: {vehicleSelected.vehicle_tag}</h3>
+													<h3>Vehicle Year: {vehicleSelected.vehicle_year}</h3>
+													<h3>
+														Vehicle Mileage: {vehicleSelected.vehicle_mileage}
+													</h3>
+													<h3>
+														Vehicle Serial: {vehicleSelected.vehicle_serial}
+													</h3>
+													<h3>
+														Edit vehicle info:{" "}
+														<Link
+															to={`/admin/vehicle/edit/${vehicleSelected.vehicle_id}`}
+														>
+															<FaEdit />
+														</Link>
+													</h3>
+												</div>
+												<div className={`col-md-2 ${classes.absolute}`}>
+													<Link to="/admin/order" onClick={handleReload}>
+														<CloseIcon className={classes.icon} />
+													</Link>{" "}
 												</div>
 											</div>
-										))}
-										<h2>Additional requests</h2>
-										<div>
-											<textarea
-												name=""
-												id=""
-												placeholder="Service description"
-												rows={6}
-												cols={150}
-												style={{ resize: "none" }}
-												onChange={(e) => {
-													setServiceDescription(e.target.value);
-												}}
-												value={serviceDescription}
-											></textarea>
 										</div>
-										<div>
-											<textarea
-												name=""
-												id=""
-												placeholder="Price"
-												rows={2}
-												cols={150}
-												style={{ resize: "none" }}
-												onChange={(e) => {
-													setPrice(e.target.value);
-												}}
-												value={price}
-											></textarea>
-										</div>
-										<button
-											className="theme-btn btn-style-one"
-											onClick={handleSubmit}
-										>
-											SUBMIT ORDER
-										</button>
 									</div>
+								)}
+								{step > 2 && (
+									<>
+										<div className={classes.boxes}>
+											<h2>Choose service</h2>
+											{services.map((service) => (
+												<div className={classes.smallboxes}>
+													<div
+														key={service.service_id}
+														onClick={() => handleSelectService(service)}
+													>
+														<h4>{service.service_name}</h4>
+														<small>{service.service_description}</small>
+													</div>
+													<div>
+														<input
+															type="checkbox"
+															onChange={(e) =>
+																handleCheckBox(service.service_id, e)
+															}
+														/>
+													</div>
+												</div>
+											))}
+										</div>
+										<div className={classes.boxes}>
+											<h2>Additional requests</h2>
+											<div>
+												<textarea
+													className={classes.textarea1}
+													name=""
+													id=""
+													placeholder="Service description"
+													// rows={6}
+													// cols={150}
+													style={{ resize: "none" }}
+													onChange={(e) => {
+														setServiceDescription(e.target.value);
+													}}
+													value={serviceDescription}
+												></textarea>
+											</div>
+											<div>
+												<textarea
+													className={classes.textarea2}
+													name=""
+													id=""
+													placeholder="Price"
+													// rows={2}
+													// cols={150}
+													style={{ resize: "none" }}
+													onChange={(e) => {
+														setPrice(e.target.value);
+													}}
+													value={price}
+												></textarea>
+											</div>
+											<button
+												className="theme-btn btn-style-one"
+												onClick={handleSubmit}
+											>
+												SUBMIT ORDER
+											</button>
+										</div>
+									</>
 								)}
 							</div>
 						</form>
@@ -399,41 +507,3 @@ function AddOrder() {
 }
 
 export default AddOrder;
-
-// import React from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faSearch } from "@fortawesome/free-solid-svg-icons";
-
-// function AddOrder() {
-// 	const handleSearch = () => {
-// 		const query = document.getElementById("search-input").value;
-// 		alert("You searched for: " + query);
-// 		// Add your search logic here
-// 	};
-
-// 	return (
-// 		<div className="container mt-5">
-// 			<div className="input-group">
-// 				<input
-// 					type="text"
-// 					className="form-control"
-// 					placeholder="Search for a customer using first name, last name, email address or phone nubmer"
-// 					aria-label="Search"
-// 					id="search-input"
-// 				/>
-// 				<div className="input-group-append">
-// 					<button
-// 						className="btn btn-outline-secondary"
-// 						type="button"
-// 						onClick={handleSearch}
-// 					>
-// 						<FontAwesomeIcon icon={faSearch} />
-// 					</button>
-// 				</div>
-// 			</div>
-// 		</div>
-// 	);
-// }
-
-// export default AddOrder;
