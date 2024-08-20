@@ -359,7 +359,7 @@ function AddOrder() {
 													</h3>
 												</div>
 												<div className={`col-md-2 ${classes.absolute}`}>
-													<Link to="/admin/order" onClick={handleReload}>
+													<Link to="/admin/order" onClick={() => setStep(1)}>
 														<CloseIcon className={classes.icon} />
 													</Link>
 												</div>
@@ -424,7 +424,7 @@ function AddOrder() {
 													</h3>
 												</div>
 												<div className={`col-md-2 ${classes.absolute}`}>
-													<Link to="/admin/order" onClick={handleReload}>
+													<Link to="/admin/order" onClick={() => setStep(2)}>
 														<CloseIcon className={classes.icon} />
 													</Link>{" "}
 												</div>

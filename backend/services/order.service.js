@@ -34,13 +34,13 @@ async function addOrder(order) {
 		// );
 		await conn.query(query2, [
 			order_id,
-			order.order_total_price,
+			order?.order_total_price || 0,
 			// order.estimated_completion_date,
-			order.completion_date || null,
-			order.additional_request || null,
-			order.notes_for_internal_use || null,
-			order.notes_for_customer || null,
-			order.additional_requests_completed,
+			order?.completion_date || null,
+			order?.additional_request || null,
+			order?.notes_for_internal_use || null,
+			order?.notes_for_customer || null,
+			order?.additional_requests_completed,
 		]);
 		const order_services = order.order_services;
 		order_services.forEach(async (value) => {
