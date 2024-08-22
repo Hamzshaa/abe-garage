@@ -67,8 +67,19 @@ async function addOrder(order) {
 async function getOrders() {
 	const query =
 		"SELECT * FROM orders INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id INNER JOIN order_status ON orders.order_id = order_status.order_id ORDER BY orders.order_id DESC limit 10";
+	const query2 =
+		"SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id INNER JOIN customer_vehicle_info ON customer_identifier.customer_id = customer_vehicle_info.customer_id";
+	const query3 =
+		"SELECT orders.order_id, orders.customer_id, orders.vehicle_id, orders.employee_id, employee_info.employee_first_name, employee_info.employee_last_name, employee_info.employee_phone FROM orders INNER JOIN employee_info ON orders.employee_id = employee_info.employee_id ";
 	const rows = await conn.query(query);
-	return rows;
+	const rows2 = await conn.query(query2);
+	const rows3 = await conn.query(query3);
+
+	return {
+		orders: rows,
+		customers: rows2,
+		employees: rows3,
+	};
 }
 
 // A function to get single order

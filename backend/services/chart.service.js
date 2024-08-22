@@ -14,7 +14,7 @@ async function getBarChartData() {
                  COUNT(customer_id) AS count
             FROM customer_identifier
             WHERE DATE(customer_added_date) BETWEEN ? AND ?
-            GROUP BY DATE(customer_added_date)
+            GROUP BY DATE_FORMAT(customer_added_date, '%Y-%m-%d')
         `;
 
   const customerRows = await db.query(customerQuery, [
@@ -28,7 +28,7 @@ async function getBarChartData() {
 
             FROM customer_vehicle_info
             WHERE DATE(vehicle_added_date) BETWEEN ? AND ?
-            GROUP BY DATE(vehicle_added_date)
+            GROUP BY DATE_FORMAT(vehicle_added_date, '%Y-%m-%d')
         `;
   const vehicleRows = await db.query(vehicleQuery, [
     startDateBefore30Days,
@@ -40,7 +40,7 @@ async function getBarChartData() {
                 COUNT(order_id) AS count
             FROM orders 
             WHERE DATE(order_date) BETWEEN ? AND ?
-            GROUP BY DATE(order_date)
+            GROUP BY DATE_FORMAT(order_date, '%Y-%m-%d')
         `;
 
   const orderRows = await db.query(orderQuery, [
