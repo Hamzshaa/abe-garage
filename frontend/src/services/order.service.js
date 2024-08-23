@@ -12,7 +12,29 @@ const getAllOrder = async (token) => {
   console.log(response);
   return response;
 };
+const changeStatus = async (token, num, id) => {
+	const requestOptions = {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			"x-access-token": token,
+		},
+		body: JSON.stringify({
+			order_id: id,
+			status: num,
+		}),
+	};
+	// const response = await fetch(`${api_url}/api/orders/status/${id}/${num}`, requestOptions);
+	const response = await fetch(`${api_url}/api/orders/status`, requestOptions);
+	console.log(response);
+	return response;
+};
+
+
+
+
 const ordersService = {
-  getAllOrder,
+	getAllOrder,
+	changeStatus,
 };
 export default ordersService;

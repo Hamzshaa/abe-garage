@@ -10,9 +10,9 @@ const PrivateAuthRoute = ({ roles, children }) => {
 
 	useEffect(() => {
 		const loggedInEmployee = getAuth();
-
 		loggedInEmployee.then((response) => {
 			if (response.employee_token) {
+				console.log(response)
 				setIsLogged(true);
 				if (
 					roles &&
@@ -27,10 +27,10 @@ const PrivateAuthRoute = ({ roles, children }) => {
 	}, [roles]);
 	if (isChecked) {
 		if (!isLogged) {
-			// return <Navigate to="/login" />;
+			return <Navigate to="/login" />;
 		}
 		if (!isAuthorized) {
-			// return <Navigate to="/unauthorized" />;
+			return <Navigate to="/unauthorized" />;
 		}
 	}
 
