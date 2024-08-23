@@ -157,10 +157,27 @@ async function updateOrder(order) {
 	}
 }
 
+async function changeStatus(req, res) {
+
+	const order_id = req.body.order_id;
+	const status = req.body.status;
+	const query = `
+		UPDATE order_status
+		SET order_status = ?
+		WHERE order_id = ?`;
+		try {
+			rows =await conn.query(query, [status, order_id]);
+			return true;
+		} catch (error) {
+			console.log(error)
+		}
+}
+
 // Export the functions
 module.exports = {
 	addOrder,
 	getOrders,
 	getOrderById,
 	updateOrder,
+	changeStatus,
 };

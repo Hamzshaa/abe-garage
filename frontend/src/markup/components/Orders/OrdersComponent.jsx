@@ -3,6 +3,8 @@ import { Table, Button } from "react-bootstrap";
 import OrderService from "../../../services/order.service";
 import { useAuth } from "../../../Contexts/AuthContext";
 import classes from "./css/OrdersComponent.module.css";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const OrdersComponent = () => {
 	const [Orders, setOrders] = useState([]);
@@ -24,6 +26,22 @@ const OrdersComponent = () => {
 		fetchOrder();
 	}, [token]);
 
+	const handleStatusChange = async (num, id) => {
+		try {
+			const res = await OrderService.changeStatus(token, num, id);
+			if (res.ok) {
+				console.log("working");
+				setOrders((prevOrders) =>
+					prevOrders.map((order) =>
+						order.order_id === id ? { ...order, order_status: num } : order
+					)
+				);
+			} else {
+				const data1 = await response.json();
+				console.log(data1);
+			}
+		} catch (error) {}
+	};
 	const fetchOrder = async () => {
 		try {
 			const res = await OrderService.getAllOrder(token);
@@ -44,7 +62,7 @@ const OrdersComponent = () => {
 				const data = await res.json();
 				setOrders(data.data.orders || []);
 				setCustomers(data.data.customers || []);
-        setEmployees(data.data.employees || [])
+				setEmployees(data.data.employees || []);
 				console.log(Orders);
 				console.log(customers);
 				console.log(employees);
@@ -75,6 +93,7 @@ const OrdersComponent = () => {
 									<th>Received by</th>
 									<th>Order Status</th>
 									<th>View/Edit</th>
+									<th style={{ width: "70px" }}></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -83,11 +102,9 @@ const OrdersComponent = () => {
 										const customer = customers.find(
 											(cust) => cust.customer_id === order.customer_id
 										);
-                    const registeringEmployee = employees.find(
-                      // (emp) => emp.employee_id === order.received_by
-                      // console.log(employees)
-                      (emp) => emp.employee_id === order.employee_id
-                    )
+										const registeringEmployee = employees.find(
+											(emp) => emp.employee_id === order.employee_id
+										);
 										return (
 											<tr key={order.order_id}>
 												<td>{order.order_id}</td>
@@ -116,17 +133,40 @@ const OrdersComponent = () => {
 													{`${registeringEmployee?.employee_first_name} ${registeringEmployee?.employee_last_name}`}
 												</td>
 												<td>
-													{order?.order_status == 2 ? (
+													{order?.order_status == 1 && (
+														<div className={classes.decliend}>Decliend</div>
+													)}
+													{order?.order_status == 2 && (
 														<div className={classes.inprogress}>
 															In progress
 														</div>
-													) : (
+													)}
+													{order?.order_status == 3 && (
 														<div className={classes.completed}>Completed</div>
 													)}
 												</td>
 												<td>
 													<ion-icon name="create-outline"></ion-icon>/
 													<ion-icon name="trash-outline"></ion-icon>
+												</td>
+												<td>
+													<div>
+														<button
+															onClick={() =>
+																handleStatusChange(3, order.order_id)
+															}
+														>
+															<CheckCircleIcon />
+														</button>
+														<br />
+														<button
+															onClick={() =>
+																handleStatusChange(1, order.order_id)
+															}
+														>
+															<CancelIcon />
+														</button>
+													</div>
 												</td>
 											</tr>
 										);

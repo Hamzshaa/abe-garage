@@ -30,6 +30,13 @@ router.put(
 	[authMiddleware.verifyToken, authMiddleware.isAdmin],
 	orderController.updateOrder
 );
+//  Create a route to change a status
+router.put(
+	"/api/orders/status",
+	[authMiddleware.verifyToken, authMiddleware.isAdmin],
+	orderController.changeStatus
+);
+
 
 //  Export the router
 module.exports = router;

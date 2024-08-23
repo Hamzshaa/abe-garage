@@ -87,10 +87,32 @@ async function updateOrder(req, res, next) {
   }
 }
 
+// Create the changestatus
+async function changeStatus(req, res, next) {
+	const order = await OrderService.changeStatus(req, res);
+	try {
+		if (!order) {
+			res.status(400).json({
+				error: "Order not found!",
+			});
+		} else {
+			res.status(200).json({
+				status: "success",
+			});
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).json({
+			error: "Something went wrong!",
+		});
+	}
+}
+
 //  Export the controllers
 module.exports = {
-  addOrder,
-  getOrders,
-  getOrderById,
-  updateOrder,
+	addOrder,
+	getOrders,
+	getOrderById,
+	updateOrder,
+	changeStatus,
 };
