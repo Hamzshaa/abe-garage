@@ -115,7 +115,14 @@ function App() {
             </PrivateAuthRoute>
           }
         />
-        <Route path="/admin/order" element={<AddOrders />} />
+        <Route
+          path="/admin/order"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <AddOrders />
+            </PrivateAuthRoute>
+          }
+        />
         <Route
           path="/admin/services"
           element={
