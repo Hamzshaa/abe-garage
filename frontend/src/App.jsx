@@ -131,6 +131,14 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        <Route
+          path="/admin/services/edit/:id"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <EditService />
+            </PrivateAuthRoute>
+          }
+        />
       </Routes>
       <Footer />
     </>

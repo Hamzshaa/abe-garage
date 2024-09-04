@@ -7,6 +7,7 @@ import employeeService from "../../../../services/employee.service";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { TextField } from "@mui/material";
+import Loader from "../../Loader";
 
 const EmployeesList = () => {
   const [employees, setEmployees] = useState([]);
@@ -15,6 +16,7 @@ const EmployeesList = () => {
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { employee } = useAuth();
 
@@ -26,6 +28,7 @@ const EmployeesList = () => {
 
   useEffect(() => {
     if (!token) return;
+    setLoading(true);
     const allEmployees = employeeService.getAllEmployees(token) || [];
     allEmployees
       .then((res) => {
@@ -50,6 +53,9 @@ const EmployeesList = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [token]);
 
@@ -136,20 +142,24 @@ const EmployeesList = () => {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
-            <div style={{ height: 400, width: "100%" }}>
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSizeOptions={[5, 10, 20]}
-                initialState={{
-                  pagination: {
-                    paginationModel: { page: 0, pageSize: 5 },
-                  },
-                }}
-                // checkboxSelection
-                disableRowSelectionOnClick
-              />
-            </div>
+            {loading ? (
+              <Loader />
+            ) : (
+              <div style={{ height: 400, width: "100%" }}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  pageSizeOptions={[5, 10, 20]}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  // checkboxSelection
+                  disableRowSelectionOnClick
+                />
+              </div>
+            )}
           </div>
         </section>
       )}

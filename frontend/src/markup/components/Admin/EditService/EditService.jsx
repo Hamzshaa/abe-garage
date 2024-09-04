@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ServiceService from "../../../../services/service.service";
 import AdminMenu from "../AdminMenu/AdminMenu";
 import { useAuth } from "../../../../Contexts/AuthContext";
@@ -18,6 +18,7 @@ const EditService = () => {
   const { employee } = useAuth();
   let token = employee?.employee_token;
   const service_id = service?.service_id;
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!service_name) {
@@ -44,7 +45,7 @@ const EditService = () => {
   };
 
   return (
-    <div>
+    <div className="admin-right-side-scroller">
       <div className="container-fluid admin-pages">
         <div className="row">
           <div className="col-md-3 admin-left-side">

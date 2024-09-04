@@ -1,8 +1,10 @@
 import { useState } from "react";
 import employeeService from "../../../../services/employee.service";
 import { useAuth } from "../../../../Contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 /* eslint-disable */
 function AddEmployeeForm(props) {
+  const navigate = useNavigate();
   const [employee_email, setEmail] = useState("");
   const [employee_first_name, setFirstName] = useState("");
   const [employee_last_name, setLastName] = useState("");
@@ -92,6 +94,7 @@ function AddEmployeeForm(props) {
           setTimeout(() => {
             // window.location.href = '/admin/employees';
             // window.location.href = "/";
+            navigate("/admin/employees");
           }, 2000);
         }
       })
@@ -109,7 +112,7 @@ function AddEmployeeForm(props) {
   };
 
   return (
-    <section className="contact-section">
+    <section className="contact-section admin-right-side-scroller">
       <div className="auto-container">
         <div className="contact-title">
           <h2>Add a new employee</h2>

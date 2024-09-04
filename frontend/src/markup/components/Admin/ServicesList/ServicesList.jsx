@@ -4,6 +4,7 @@ import ServiceService from "../../../../services/service.service";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import Loader from "../../Loader";
 
 const style = {
   position: "absolute",
@@ -29,6 +30,7 @@ const ServicesList = () => {
   const [serverError, setServerError] = useState(""); // eslint-disable-line
   const [deleteId, setDeleteId] = useState("");
   const [success, setSuccess] = useState(false); // eslint-disable-line
+  const [loading, setLoading] = useState(false);
   // const [token, setToken] = useState(null);
 
   const [open, setOpen] = React.useState(false);
@@ -52,6 +54,7 @@ const ServicesList = () => {
 
   const fetchServices = async () => {
     try {
+      setLoading(true);
       const res = await ServiceService.getAllServices(token);
       console.log(res);
       if (!res.ok) {
@@ -71,9 +74,12 @@ const ServicesList = () => {
         setService(data.data || []);
         console.log(data.data);
       }
+
+      setLoading(false);
     } catch (err) {
       setApiError(true);
       setApiErrorMessage("An error occurred while fetching services");
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -83,9 +89,11 @@ const ServicesList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!service_name) {
       setServiceNameRequired("Service name is required");
+      setLoading(false);
       return;
     } else {
       setServiceNameRequired("");
@@ -102,11 +110,14 @@ const ServicesList = () => {
         setServerError("");
         fetchServices();
       }
+      setLoading(false);
     } catch (error) {
       setServerError("Failed to create service. Please try again.");
+      setLoading(false);
     }
   };
   const handleDelete = async (serverId) => {
+    setLoading(true);
     console.log(serverId.service_id);
     try {
       const res = await ServiceService.deactivateService(
@@ -122,16 +133,20 @@ const ServicesList = () => {
         setOpen(false);
         fetchServices();
       }
+      setLoading(false);
     } catch (error) {
       setServerError("Failed to delete service. Please try again.");
+      setLoading(false);
     }
   };
   const handleEdit = (service) => {
-    navigate(`/services/edit/${service.service_id}`, { state: { service } });
+    navigate(`/admin/services/edit/${service.service_id}`, {
+      state: { service },
+    });
   };
 
   return (
-    <>
+    <div className="admin-right-side-scroller">
       {apiError ? (
         <section className="contact-section">
           <div className="auto-container">
@@ -152,24 +167,30 @@ const ServicesList = () => {
                 heading towards a streamlined cloud solution.
               </p>
             </div>
-            {Service.map((service) => (
-              <div className="Service-display mb-2" key={service.id}>
-                <div className="service">
-                  <h6 className="mt-2">{service.service_name}</h6>
-                  <p>{service.service_description}</p>
-                </div>
-                <div className="action">
-                  <ion-icon
-                    name="create-outline"
-                    onClick={() => handleEdit(service)}
-                  ></ion-icon>
-                  <ion-icon
-                    name="trash-outline"
-                    onClick={() => handleOpen(service)}
-                  ></ion-icon>
-                </div>
-              </div>
-            ))}
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                {Service.map((service) => (
+                  <div className="Service-display mb-2" key={service.id}>
+                    <div className="service">
+                      <h6 className="mt-2">{service.service_name}</h6>
+                      <p>{service.service_description}</p>
+                    </div>
+                    <div className="action">
+                      <ion-icon
+                        name="create-outline"
+                        onClick={() => handleEdit(service)}
+                      ></ion-icon>
+                      <ion-icon
+                        name="trash-outline"
+                        onClick={() => handleOpen(service)}
+                      ></ion-icon>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
             <Modal
               open={open}
               onClose={handleClose}
@@ -224,7 +245,7 @@ const ServicesList = () => {
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 };
 

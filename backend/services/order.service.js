@@ -66,7 +66,7 @@ async function addOrder(order) {
 // A function to get all orders
 async function getOrders() {
   const query =
-    "SELECT * FROM orders INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id INNER JOIN order_status ON orders.order_id = order_status.order_id ORDER BY orders.order_id DESC limit 10";
+    "SELECT * FROM orders INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id INNER JOIN order_status ON orders.order_id = order_status.order_id ORDER BY orders.order_id DESC";
   const query2 =
     "SELECT * FROM customer_identifier INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id INNER JOIN customer_vehicle_info ON customer_identifier.customer_id = customer_vehicle_info.customer_id";
   const query3 =

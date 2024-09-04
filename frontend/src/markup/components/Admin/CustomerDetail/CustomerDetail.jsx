@@ -132,7 +132,7 @@ function CustomerDetail() {
   }
 
   return (
-    <div>
+    <div className="admin-right-side-scroller">
       <main className="content-container">
         <div className="vertical-labels">
           <div className="label info-label">Info</div>
