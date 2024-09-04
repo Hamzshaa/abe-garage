@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../Contexts/AuthContext";
 import customerService from "../../../../services/customer.service";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import vehiclesService from "../../../../services/vehicle.service";
+import vehiclesService, {
+  addVehicle,
+} from "../../../../services/vehicle.service";
 import ordersService from "../../../../services/order.service";
+import { IoClose } from "react-icons/io5";
 
 function CustomerDetail() {
   const [customer, setCustomer] = useState("");
@@ -12,9 +15,21 @@ function CustomerDetail() {
   const [loadingCustomer, setLoadingCustomer] = useState(true);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
   const [loadingOrders, setLoadingOrders] = useState(true);
+  const [showAddVehicle, setShowAddVehicle] = useState(false);
   const [error, setError] = useState(null); // To track any errors
   const navigate = useNavigate();
   const { customerId } = useParams(); // Fetch ID from route params
+  const [newVehicle, setNewVehicle] = useState({
+    customer_id: customerId,
+    vehicle_year: "",
+    vehicle_make: "",
+    vehicle_model: "",
+    vehicle_type: "",
+    vehicle_mileage: "",
+    vehicle_tag: "",
+    vehicle_serial: "",
+    vehicle_color: "",
+  });
 
   const { employee } = useAuth();
   let loggedInEmployeeToken = employee?.employee_token || "";
@@ -67,7 +82,43 @@ function CustomerDetail() {
     };
     fetchCustomerAndRelatedData();
   }, [customerId, loggedInEmployeeToken]);
-  console.log(orders);
+
+  const handleVehicleChange = (e) => {
+    setNewVehicle((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleVehicleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await addVehicle(newVehicle, loggedInEmployeeToken);
+
+      console.log(data);
+
+      if (data?.data) {
+        setVehicles((prev) => [...prev, data.data]);
+        setNewVehicle({
+          customer_id: customerId,
+          vehicle_year: "",
+          vehicle_make: "",
+          vehicle_model: "",
+          vehicle_type: "",
+          vehicle_mileage: "",
+          vehicle_tag: "",
+          vehicle_serial: "",
+          vehicle_color: "",
+        });
+        setShowAddVehicle(false);
+      } else {
+        console.log(data.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (loadingCustomer) {
     return <p>Loading customer details...</p>;
   }
@@ -143,8 +194,86 @@ function CustomerDetail() {
                 )}
               </div>
             )}
-            <button className="add-vehicle-btn">Add New Vehicle</button>
+            {!showAddVehicle && (
+              <button
+                className="add-vehicle-btn"
+                onClick={() => setShowAddVehicle(true)}
+              >
+                Add New Vehicle
+              </button>
+            )}
           </div>
+
+          {showAddVehicle && (
+            <div className="add-vehicle">
+              <h3>Add a new vehicle</h3>
+              <form className="add-vehicle-form" onSubmit={handleVehicleSubmit}>
+                <input
+                  type="text"
+                  placeholder="Vehicle year"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_year}
+                  name="vehicle_year"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle make"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_make}
+                  name="vehicle_make"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle model"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_model}
+                  name="vehicle_model"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle type"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_type}
+                  name="vehicle_type"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle mileage"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_mileage}
+                  name="vehicle_mileage"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle tag"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_tag}
+                  name="vehicle_tag"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle serial"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_serial}
+                  name="vehicle_serial"
+                />
+                <input
+                  type="text"
+                  placeholder="Vehicle color"
+                  onChange={handleVehicleChange}
+                  value={newVehicle.vehicle_color}
+                  name="vehicle_color"
+                />
+                <button type="submit">ADD VEHICLE</button>
+              </form>
+              <div
+                className="add-vehicle-close-btn"
+                onClick={() => setShowAddVehicle(false)}
+              >
+                <IoClose size="28" color="white" />
+              </div>
+            </div>
+          )}
 
           <div className="orders-info">
             <h3>Orders of {customer.customer_first_name}</h3>

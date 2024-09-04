@@ -34,6 +34,7 @@ const createVehicle = async (req, res, next) => {
     }
 
     res.status(200).json({
+      data: vehicleData,
       success: "Vehicle added successfully!",
       status: "true",
     });

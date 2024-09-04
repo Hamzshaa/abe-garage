@@ -15,3 +15,25 @@ const vehiclesService = {
   getVehicles,
 };
 export default vehiclesService;
+
+export const addVehicle = async (newVehicle, token) => {
+  try {
+    const res = await fetch(`${api_url}/api/vehicle`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+      body: JSON.stringify(newVehicle),
+    });
+
+    if (!res.ok) {
+      console.log("Error adding vehicle");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
